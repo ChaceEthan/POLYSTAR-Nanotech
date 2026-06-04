@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polystar-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: polystar-backend
+  template:
+    metadata:
+      labels:
+        app: polystar-backend
+    spec:
+      containers:
+        - name: backend
+          image: polystar/backend:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: polystar-platform-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polystar-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: polystar-frontend
+  template:
+    metadata:
+      labels:
+        app: polystar-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: polystar/frontend:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: polystar-platform-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polystar-backend
+spec:
+  selector:
+    app: polystar-backend
+  ports:
+    - port: 5000
+      targetPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polystar-frontend
+spec:
+  selector:
+    app: polystar-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000

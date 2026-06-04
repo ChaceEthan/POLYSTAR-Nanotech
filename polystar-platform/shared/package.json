@@ -1,0 +1,17 @@
+{
+  "name": "@polystar/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p tsconfig.json",
+    "dev": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -w -p tsconfig.json",
+    "lint": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc --noEmit",
+    "typecheck": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">POLYSTAR Nanotech Ltd mark</title>
+  <rect width="512" height="512" rx="96" fill="#0B0F19"/>
+  <path d="M76 154H236C285 154 320 184 320 229C320 275 285 305 236 305H148V382H76V154ZM148 214V250H232C242 250 250 242 250 232C250 221 242 214 232 214H148Z" fill="#11B5B8"/>
+  <path d="M62 222H198M62 258H206M62 294H180" stroke="#0A2E5D" stroke-width="8" stroke-linecap="round"/>
+  <path d="M163 133H221L244 110H313L334 89H406" stroke="#00AEEF" stroke-width="6" stroke-linecap="round"/>
+  <path d="M165 385H229L252 408H326L348 430H424" stroke="#8FB4CD" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="315" cy="256" r="104" fill="url(#lens)" stroke="url(#ring)" stroke-width="14"/>
+  <path d="M315 185V246M315 270V329M244 256H304M328 256H388" stroke="#F8FAFC" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="315" cy="256" r="34" fill="#11B5B8"/>
+  <defs>
+    <radialGradient id="lens" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(274 203) rotate(55) scale(170)">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="0.35" stop-color="#11B5B8" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#0A2E5D" stop-opacity="0.8"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="221" y1="161" x2="407" y2="356" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.56" stop-color="#A8B0B6"/>
+      <stop offset="1" stop-color="#3A3A3A"/>
+    </linearGradient>
+  </defs>
+</svg>

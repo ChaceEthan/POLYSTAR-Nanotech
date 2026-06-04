@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: polystar-platform/package-lock.json
+
+      - name: Install
+        working-directory: polystar-platform
+        run: npm install
+
+      - name: Typecheck
+        working-directory: polystar-platform
+        run: npm run typecheck
+
+      - name: Build
+        working-directory: polystar-platform
+        run: npm run build

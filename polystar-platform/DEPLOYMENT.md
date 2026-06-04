@@ -10,15 +10,17 @@ Do not commit real `.env` secrets. Configure production environment variables in
 
 ## Frontend: Vercel
 
-Vercel uses `vercel.json` at the repository root.
+Vercel uses `frontend/vercel.json` when the project root is `polystar-platform/frontend`.
 
 Build settings:
 
 - Framework: Next.js
 - Install command: `npm install`
-- Build command: `npm run build --workspace shared && npm run build --workspace frontend`
-- Output directory: `frontend/.next`
-- Development command: `npm run dev --workspace frontend`
+- Root directory: `polystar-platform/frontend`
+- Build command: `npm run build`
+- Output directory: automatic
+- Development command: `npm run dev`
+- Node version: `20.x`
 
 Required Vercel environment variables:
 
@@ -43,15 +45,16 @@ Post-deploy checks:
 
 ## Backend: Render
 
-Render uses `render.yaml` at the repository root.
+Render uses `render.yaml` from `polystar-platform` with the service root set to `polystar-platform`.
 
 Build settings:
 
 - Runtime: Node
-- Root directory: `.`
-- Build command: `npm install && npm run build --workspace shared && npm run build --workspace backend`
+- Root directory: `polystar-platform`
+- Build command: `npm install && npm run build --workspace backend`
 - Start command: `npm run start --workspace backend`
 - Health check path: `/api/v1/health`
+- Node version: `20.x`
 
 Required Render environment variables:
 

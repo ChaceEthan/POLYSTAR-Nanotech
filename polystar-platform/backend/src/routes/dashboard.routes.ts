@@ -5,4 +5,4 @@ import { authorize } from "../middleware/authorize.js";
 
 export const dashboardRoutes = Router();
 
-dashboardRoutes.get("/summary", authenticate, authorize("super_admin", "admin"), dashboardController.summary);
+dashboardRoutes.get("/summary", authenticate, authorize("super_admin", "owner", "partner", "admin"), dashboardController.summary);

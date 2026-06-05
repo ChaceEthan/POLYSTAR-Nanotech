@@ -11,7 +11,7 @@ export type ApiEnvelope<T> = {
 export const apiClient = axios.create({
   baseURL: siteConfig.apiBaseUrl,
   withCredentials: true,
-  timeout: 15000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json"
   }
@@ -28,7 +28,10 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message = error.response?.data?.message ?? error.message ?? "Request failed";
+    const message =
+      error.code === "ECONNABORTED"
+        ? "The request timed out while connecting to the POLYSTAR API. Please try again."
+        : error.response?.data?.message ?? error.message ?? "Request failed";
     return Promise.reject(new Error(message));
   }
 );

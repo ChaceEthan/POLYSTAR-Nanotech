@@ -5,6 +5,7 @@ export type SettingPayload = {
   group?: string;
   isPublic?: boolean;
   description?: string;
+  metadata?: Record<string, unknown>;
 };
 
 export const settingsService = {

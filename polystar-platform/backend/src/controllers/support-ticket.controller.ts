@@ -4,7 +4,7 @@ import { created, ok } from "../utils/http.js";
 import { AppError } from "../middleware/error.js";
 import { logAuditEvent } from "../utils/audit.js";
 
-const staffRoles = new Set(["super_admin", "admin", "editor"]);
+const staffRoles = new Set(["owner", "partner", "super_admin", "admin", "editor"]);
 const ticketSortFields = new Set(["createdAt", "updatedAt", "priority", "status", "subject"]);
 
 function isStaff(req: Request) {

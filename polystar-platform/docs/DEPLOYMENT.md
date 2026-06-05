@@ -32,9 +32,9 @@ Set:
 
 Deploy only the backend to Render with:
 
-- Root directory: `polystar-platform`
-- Build command: `npm install && npm run build --workspace backend`
-- Start command: `npm run start --workspace backend`
+- Root directory: `polystar-platform/backend`
+- Build command: `npm install` then `npm run build`
+- Start command: `npm start`
 - Node version: `22.x`
 
 Required variables:

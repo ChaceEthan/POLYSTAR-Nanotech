@@ -13,6 +13,8 @@ type CrudRouteOptions = {
   readPermissions?: string[];
   writeRoles?: string[];
   writePermissions?: string[];
+  deleteRoles?: string[];
+  deletePermissions?: string[];
   readFilter?: (req: Request) => Record<string, any>;
 };
 
@@ -25,9 +27,24 @@ export function crudRoutes(service: GenericCrudService<any>, options: CrudRouteO
       "super_admin",
       "admin",
       "editor",
+      "owner",
+      "partner",
       ...(options.writeRoles ?? []),
       "content:write",
+      "content:edit",
       ...(options.writePermissions ?? [])
+    )
+  ];
+  const deleteGuard = [
+    authenticate,
+    authorize(
+      "super_admin",
+      "owner",
+      "partner",
+      "admin",
+      ...(options.deleteRoles ?? []),
+      "content:delete",
+      ...(options.deletePermissions ?? [])
     )
   ];
 
@@ -37,6 +54,8 @@ export function crudRoutes(service: GenericCrudService<any>, options: CrudRouteO
         authenticate,
         authorize(
           "super_admin",
+          "owner",
+          "partner",
           "admin",
           "editor",
           ...(options.readRoles ?? []),
@@ -50,7 +69,7 @@ export function crudRoutes(service: GenericCrudService<any>, options: CrudRouteO
   router.get("/:id", ...readGuard, validate({ params: objectIdSchema }), controller.get);
   router.post("/", ...writeGuard, validate({ body: entityBodySchema }), controller.create);
   router.put("/:id", ...writeGuard, validate({ params: objectIdSchema, body: entityBodySchema }), controller.update);
-  router.delete("/:id", ...writeGuard, validate({ params: objectIdSchema }), controller.delete);
+  router.delete("/:id", ...deleteGuard, validate({ params: objectIdSchema }), controller.delete);
 
   return router;
 }

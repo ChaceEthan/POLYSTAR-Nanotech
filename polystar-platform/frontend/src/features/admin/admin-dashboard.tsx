@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Activity, BookOpenText, BriefcaseBusiness, Contact, FileQuestion, FolderKanban, HelpCircle, Layers3, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { adminSections } from "@/lib/navigation";
+import { adminMenuItems } from "@/lib/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,9 +82,9 @@ export function AdminDashboard() {
         </CardContent>
       </Card>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {adminSections.map((section) => (
-          <Button key={section} asChild variant="outline" className="justify-start">
-            <Link href={`/admin/${section}`}>{section.replaceAll("-", " ")}</Link>
+        {adminMenuItems.filter((item) => item.href !== "/admin").map((item) => (
+          <Button key={item.href} asChild variant="outline" className="justify-start">
+            <Link href={item.href}>{item.label}</Link>
           </Button>
         ))}
       </div>

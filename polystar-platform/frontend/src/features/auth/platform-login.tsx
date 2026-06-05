@@ -10,11 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthApi } from "@/hooks/use-auth-api";
 
-const adminRoles = new Set(["super_admin", "admin", "editor"]);
+const adminRoles = new Set(["owner", "partner", "super_admin", "admin", "editor"]);
 
 function nextPathForRole(role: string) {
   if (adminRoles.has(role)) return "/admin";
-  if (role === "partner") return "/admin/blog-posts";
+  if (role === "partner") return "/admin/posts";
   return "/client";
 }
 

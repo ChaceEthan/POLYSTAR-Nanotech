@@ -30,12 +30,12 @@ apiRoutes.use("/auth", authRoutes);
 apiRoutes.use("/dashboard", dashboardRoutes);
 apiRoutes.use("/", requestRoutes);
 
-const partnerContentAccess = { readRoles: ["partner"], writeRoles: ["partner"] };
+const partnerContentAccess = { readRoles: ["owner", "partner"], writeRoles: ["owner", "partner"], deleteRoles: ["owner", "partner"] };
 
-apiRoutes.use("/projects", crudRoutes(services.projects, { publicRead: true, writeRoles: ["partner"] }));
-apiRoutes.use("/portfolio", crudRoutes(services.portfolio, { publicRead: true, writeRoles: ["partner"] }));
-apiRoutes.use("/blog", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true, writeRoles: ["partner"] }));
-apiRoutes.use("/blog-posts", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true, writeRoles: ["partner"] }));
+apiRoutes.use("/projects", crudRoutes(services.projects, { publicRead: true, writeRoles: ["owner", "partner"], deleteRoles: ["owner", "partner"] }));
+apiRoutes.use("/portfolio", crudRoutes(services.portfolio, { publicRead: true, writeRoles: ["owner", "partner"], deleteRoles: ["owner", "partner"] }));
+apiRoutes.use("/blog", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true, writeRoles: ["owner", "partner"], deleteRoles: ["owner", "partner"] }));
+apiRoutes.use("/blog-posts", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true, writeRoles: ["owner", "partner"], deleteRoles: ["owner", "partner"] }));
 apiRoutes.use("/services", crudRoutes(services.services, { publicRead: true }));
 apiRoutes.use("/tickets", supportTicketRoutes);
 apiRoutes.use("/support-tickets", supportTicketRoutes);
@@ -68,7 +68,7 @@ const adminCollections = [
   "analytics_events"
 ] as const;
 
-const staffRoles = new Set(["super_admin", "admin", "editor"]);
+const staffRoles = new Set(["owner", "partner", "super_admin", "admin", "editor"]);
 
 function isStaff(req: Request) {
   return Boolean(req.user?.permissions.includes("*") || (req.user?.role && staffRoles.has(req.user.role)));

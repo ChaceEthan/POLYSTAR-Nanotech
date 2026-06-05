@@ -25,34 +25,43 @@ export const publicPages = [
   { slug: "careers", title: "Careers", summary: "Join a multidisciplinary team building advanced technology in Rwanda." },
   { slug: "partner-with-us", title: "Partner With Us", summary: "Collaborate on industrial systems, innovation programs, distribution, and R&D." },
   { slug: "contact", title: "Contact", summary: "Reach POLYSTAR Nanotech Ltd in Kigali, Rwanda." },
+  { slug: "contact-us", title: "Contact Us", summary: "Contact POLYSTAR Nanotech Ltd for engineering, software, infrastructure, training, and partnership requests." },
   { slug: "request-consultation", title: "Request Consultation", summary: "Book engineering advisory for a new or active technical initiative." },
   { slug: "get-quotation", title: "Get Quotation", summary: "Request pricing for services, equipment integration, or project delivery." },
-  { slug: "book-site-visit", title: "Book Site Visit", summary: "Schedule a technical assessment at your facility or project location." }
+  { slug: "book-site-visit", title: "Book Site Visit", summary: "Schedule a technical assessment at your facility or project location." },
+  { slug: "privacy-policy", title: "Privacy Policy", summary: "How POLYSTAR Nanotech Ltd handles submitted contact, quotation, consultation, and client portal data." },
+  { slug: "terms-and-conditions", title: "Terms and Conditions", summary: "Terms governing use of the POLYSTAR Platform and public website." }
 ];
 
 export const adminSections = [
-  "users",
-  "admins",
+  "posts",
   "projects",
-  "portfolio",
-  "services",
-  "case-studies",
-  "testimonials",
-  "partners",
   "gallery",
   "videos",
   "documents",
-  "blog-posts",
-  "downloads",
+  "team",
   "careers",
+  "seo",
+  "settings",
   "quotations",
   "consultations",
   "site-visits",
   "contacts",
-  "translations",
-  "settings",
   "support-tickets",
   "analytics-events"
+] as const;
+
+export const adminMenuItems = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/projects", label: "Projects" },
+  { href: "/admin/gallery", label: "Gallery" },
+  { href: "/admin/videos", label: "Videos" },
+  { href: "/admin/documents", label: "Documents" },
+  { href: "/admin/team", label: "Team" },
+  { href: "/admin/careers", label: "Careers" },
+  { href: "/admin/seo", label: "SEO" },
+  { href: "/admin/settings", label: "Settings" }
 ] as const;
 
 export const clientSections = [

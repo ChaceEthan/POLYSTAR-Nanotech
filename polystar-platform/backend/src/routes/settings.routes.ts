@@ -8,8 +8,8 @@ import { settingBodySchema, settingKeySchema } from "../validators/entity.valida
 export const settingsRoutes = Router();
 
 settingsRoutes.get("/public", settingsController.publicSettings);
-settingsRoutes.use(authenticate, authorize("super_admin", "admin", "editor", "settings:read"));
+settingsRoutes.use(authenticate, authorize("super_admin", "owner", "partner", "admin", "editor", "settings:read"));
 settingsRoutes.get("/", settingsController.list);
 settingsRoutes.get("/:key", validate({ params: settingKeySchema }), settingsController.get);
-settingsRoutes.put("/:key", authorize("super_admin", "admin", "settings:write"), validate({ params: settingKeySchema, body: settingBodySchema }), settingsController.upsert);
-settingsRoutes.delete("/:key", authorize("super_admin", "admin", "settings:delete"), validate({ params: settingKeySchema }), settingsController.delete);
+settingsRoutes.put("/:key", authorize("super_admin", "owner", "partner", "admin", "settings:write"), validate({ params: settingKeySchema, body: settingBodySchema }), settingsController.upsert);
+settingsRoutes.delete("/:key", authorize("super_admin", "owner", "partner", "admin", "settings:delete"), validate({ params: settingKeySchema }), settingsController.delete);

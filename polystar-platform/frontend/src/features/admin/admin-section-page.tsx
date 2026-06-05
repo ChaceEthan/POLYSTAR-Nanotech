@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useMemo, useState } from "react";
-import { CheckCircle2, Pencil, Plus, Save, SlidersHorizontal, Upload, X } from "lucide-react";
+import { CheckCircle2, EyeOff, Pencil, Plus, Save, SlidersHorizontal, Trash2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,8 +11,11 @@ import { DataTable, entityToDashboardRow } from "@/components/dashboard/data-tab
 import { useApiResource } from "@/hooks/use-api-resource";
 import { uploadFile } from "@/services/upload-service";
 import type { EntityRecord } from "@/services/resource-service";
+import { AdminSettingsSectionPage } from "./admin-settings-section-page";
 
 const adminResourcePaths: Record<string, string> = {
+  posts: "/blog-posts",
+  team: "/admins",
   "case-studies": "/case-studies",
   "blog-posts": "/blog-posts",
   "site-visits": "/site-visits",
@@ -20,8 +23,8 @@ const adminResourcePaths: Record<string, string> = {
   "analytics-events": "/analytics-events"
 };
 
-const editableSections = new Set(["projects", "portfolio", "case-studies", "blog-posts", "services", "gallery", "videos", "documents"]);
-const mediaSections = new Set(["projects", "portfolio", "case-studies", "blog-posts", "gallery", "videos", "documents"]);
+const editableSections = new Set(["posts", "projects", "portfolio", "case-studies", "blog-posts", "services", "gallery", "videos", "documents", "team", "careers"]);
+const mediaSections = new Set(["posts", "projects", "portfolio", "case-studies", "blog-posts", "gallery", "videos", "documents", "team", "careers"]);
 
 type UploadedMedia = {
   secure_url?: string;
@@ -98,6 +101,10 @@ function attachmentsFromText(value: string) {
 }
 
 export function AdminSectionPage({ section }: { section: string }) {
+  if (section === "seo" || section === "settings") {
+    return <AdminSettingsSectionPage section={section} />;
+  }
+
   const title = section.replaceAll("-", " ");
   const basePath = adminResourcePaths[section] ?? `/${section}`;
   const resource = useApiResource(section, basePath, { limit: 10, sortBy: "updatedAt", sortOrder: "desc" });
@@ -113,6 +120,7 @@ export function AdminSectionPage({ section }: { section: string }) {
   const [formError, setFormError] = useState<string | undefined>();
   const [uploading, setUploading] = useState<"image" | "video" | undefined>();
   const isSaving = resource.create.isPending || resource.update.isPending;
+  const isMutating = isSaving || resource.remove.isPending;
 
   function openEditor(entity?: EntityRecord) {
     setEditingId(entity ? recordId(entity) : undefined);
@@ -176,6 +184,29 @@ export function AdminSectionPage({ section }: { section: string }) {
       await resource.update.mutateAsync({ id, payload: { status: "published" } });
     } catch (error) {
       setFormError(errorMessage(error) ?? "Unable to publish this record.");
+    }
+  }
+
+  async function unpublishRecord(entity: EntityRecord) {
+    const id = recordId(entity);
+    if (!id) return;
+    setFormError(undefined);
+    try {
+      await resource.update.mutateAsync({ id, payload: { status: "draft" } });
+    } catch (error) {
+      setFormError(errorMessage(error) ?? "Unable to unpublish this record.");
+    }
+  }
+
+  async function deleteRecord(entity: EntityRecord) {
+    const id = recordId(entity);
+    if (!id) return;
+    if (typeof window !== "undefined" && !window.confirm(`Delete ${textValue(entity.title ?? entity.name) || "this record"}?`)) return;
+    setFormError(undefined);
+    try {
+      await resource.remove.mutateAsync(id);
+    } catch (error) {
+      setFormError(errorMessage(error) ?? "Unable to delete this record.");
     }
   }
 
@@ -398,9 +429,20 @@ export function AdminSectionPage({ section }: { section: string }) {
                           <Pencil className="h-4 w-4" />
                           Edit
                         </Button>
-                        <Button type="button" variant="secondary" size="sm" onClick={() => publishRecord(entity)} disabled={resource.update.isPending}>
-                          <CheckCircle2 className="h-4 w-4" />
-                          Publish
+                        {row.status === "published" ? (
+                          <Button type="button" variant="outline" size="sm" onClick={() => unpublishRecord(entity)} disabled={isMutating}>
+                            <EyeOff className="h-4 w-4" />
+                            Unpublish
+                          </Button>
+                        ) : (
+                          <Button type="button" variant="secondary" size="sm" onClick={() => publishRecord(entity)} disabled={isMutating}>
+                            <CheckCircle2 className="h-4 w-4" />
+                            Publish
+                          </Button>
+                        )}
+                        <Button type="button" variant="outline" size="sm" onClick={() => deleteRecord(entity)} disabled={isMutating}>
+                          <Trash2 className="h-4 w-4" />
+                          Delete
                         </Button>
                       </div>
                     );

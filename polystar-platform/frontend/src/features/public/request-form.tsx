@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { RequestFormType } from "@/types";
@@ -23,6 +24,8 @@ const schema = z.object({
 export function RequestForm({ type }: { type: RequestFormType }) {
   const requests = usePublicRequests();
   const mutation = requests[type];
+  const [successMessage, setSuccessMessage] = useState<string | undefined>();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -36,8 +39,16 @@ export function RequestForm({ type }: { type: RequestFormType }) {
   });
 
   async function onSubmit(values: z.infer<typeof schema>) {
-    await mutation.mutateAsync(values);
-    form.reset();
+    setSuccessMessage(undefined);
+    setErrorMessage(undefined);
+
+    try {
+      await mutation.mutateAsync(values);
+      form.reset();
+      setSuccessMessage("Request submitted successfully");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Unable to submit this request. Please try again.");
+    }
   }
 
   return (
@@ -74,9 +85,11 @@ export function RequestForm({ type }: { type: RequestFormType }) {
         <Label htmlFor="message">Message</Label>
         <Textarea id="message" {...form.register("message")} />
       </div>
+      {successMessage && <p className="text-sm font-medium text-accent">{successMessage}</p>}
+      {errorMessage && <p className="text-sm font-medium text-destructive">{errorMessage}</p>}
       <Button type="submit" disabled={form.formState.isSubmitting || mutation.isPending}>
         <Send className="h-4 w-4" />
-        {form.formState.isSubmitting || mutation.isPending ? "Sending" : "Send Request"}
+        {form.formState.isSubmitting || mutation.isPending ? "Submitting..." : "Send Request"}
       </Button>
     </form>
   );

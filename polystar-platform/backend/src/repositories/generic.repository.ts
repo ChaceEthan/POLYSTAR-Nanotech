@@ -17,6 +17,26 @@ export type ListOptions = {
 };
 
 const allowedSortFields = new Set(["createdAt", "updatedAt", "title", "name", "status", "locale", "category", "industry"]);
+const searchableFields = [
+  "title",
+  "name",
+  "summary",
+  "description",
+  "subject",
+  "message",
+  "email",
+  "company",
+  "service",
+  "projectScope",
+  "client",
+  "category",
+  "industry",
+  "location"
+];
+
+function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 export class GenericRepository<T = any> {
   readonly collectionName: string;
@@ -36,7 +56,10 @@ export class GenericRepository<T = any> {
     if (options.category) filter.category = options.category;
     if (options.industry) filter.industry = options.industry;
     if (options.tag) filter.tags = options.tag;
-    if (options.q) filter.$text = { $search: options.q };
+    if (options.q) {
+      const search = new RegExp(escapeRegex(options.q), "i");
+      filter.$or = searchableFields.map((field) => ({ [field]: search }));
+    }
     if (options.createdFrom) createdAt.$gte = new Date(options.createdFrom);
     if (options.createdTo) createdAt.$lte = new Date(options.createdTo);
     if (Object.keys(createdAt).length > 0) filter.createdAt = createdAt;

@@ -2,13 +2,15 @@ services:
   - type: web
     name: polystar-backend
     runtime: node
-    rootDir: polystar-platform
-    buildCommand: npm install && npm run build --workspace backend
-    startCommand: npm run start --workspace backend
+    rootDir: polystar-platform/backend
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
     healthCheckPath: /api/v1/health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: 22.x
       - key: MONGODB_URI
         sync: false
       - key: MONGODB_DNS_SERVERS

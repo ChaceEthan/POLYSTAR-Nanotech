@@ -8,11 +8,18 @@ npm install
 docker compose up --build
 ```
 
-Frontend runs on `http://localhost:3000`; backend runs on `http://localhost:5000/api/v1`.
+Frontend and backend local URLs should come from `.env` files during development.
 
 ## Vercel Frontend
 
-Use `deployment/vercel.json` and set:
+Deploy the frontend as a separate Vercel project with:
+
+- Framework: Next.js
+- Root directory: `polystar-platform/frontend`
+- Build command: `npm run build`
+- Output directory: automatic
+
+Set:
 
 - `NEXT_PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_API_BASE_URL`
@@ -23,12 +30,23 @@ Use `deployment/vercel.json` and set:
 
 ## Backend
 
-Deploy `backend` to a Node.js host or container platform. Required variables:
+Deploy only the backend to Render with:
+
+- Root directory: `polystar-platform/backend`
+- Build command: `npm install && npm run build`
+- Start command: `node dist/server.js`
+- Node version: `22.x`
+
+Required variables:
 
 - `MONGODB_URI`
-- `JWT_SECRET`
+- `JWT_ACCESS_SECRET`
 - `JWT_REFRESH_SECRET`
+- `CLIENT_URL`
 - `CORS_ORIGIN`
+- `APP_URL`
+- `API_URL`
+- `FRONTEND_URL`
 - `SMTP_HOST`
 - `SMTP_PORT`
 - `SMTP_SECURE`

@@ -20,7 +20,7 @@ Build settings:
 - Build command: `npm run build`
 - Output directory: automatic
 - Development command: `npm run dev`
-- Node version: `20.x`
+- Node version: `22.x`
 
 Required Vercel environment variables:
 
@@ -45,16 +45,16 @@ Post-deploy checks:
 
 ## Backend: Render
 
-Render uses `render.yaml` from `polystar-platform` with the service root set to `polystar-platform`.
+Render deploys only the backend service from the repository-root `render.yaml`.
 
 Build settings:
 
 - Runtime: Node
-- Root directory: `polystar-platform`
-- Build command: `npm install && npm run build --workspace backend`
-- Start command: `npm run start --workspace backend`
+- Root directory: `polystar-platform/backend`
+- Build command: `npm install && npm run build`
+- Start command: `node dist/server.js`
 - Health check path: `/api/v1/health`
-- Node version: `20.x`
+- Node version: `22.x`
 
 Required Render environment variables:
 
@@ -103,6 +103,6 @@ npm run dev
 
 Then verify:
 
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:5000/api/v1/health`
+- Frontend URL from `NEXT_PUBLIC_SITE_URL`
+- Backend health URL from `NEXT_PUBLIC_API_BASE_URL` plus `/health`
 - Major pages: Home, About, Services, Projects, Portfolio, Blog, Contact, Admin Dashboard, Client Portal

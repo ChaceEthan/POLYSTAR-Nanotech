@@ -1,5 +1,11 @@
 import { COMPANY, SUPPORTED_LANGUAGES } from "@polystar/shared";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+if (!apiBaseUrl) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is required.");
+}
+
 export const siteConfig = {
   ...COMPANY,
   phone: process.env.NEXT_PUBLIC_COMPANY_PHONE ?? "+250781990307",
@@ -9,7 +15,7 @@ export const siteConfig = {
     process.env.NEXT_PUBLIC_QR_COMPANY_PROFILE_URL ?? "https://www.polystar.rw/company-profile",
   description:
     "Industrial automation, embedded systems, smart infrastructure, software development, consulting, training, and research solutions from Kigali, Rwanda.",
-  apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000/api/v1",
+  apiBaseUrl,
   languages: SUPPORTED_LANGUAGES
 };
 

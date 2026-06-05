@@ -1,8 +1,0 @@
-<svg width="420" height="120" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="8" y="8" width="104" height="104" rx="8" fill="#0A2E5D"/>
-  <path d="M33 78V32h35c21 0 33 10 33 28S89 88 68 88H51V78h17c13 0 20-5 20-18s-7-18-20-18H46v36H33Z" fill="#F8FAFC"/>
-  <path d="M30 94h72" stroke="#00AEEF" stroke-width="8" stroke-linecap="round"/>
-  <text x="138" y="52" fill="#0A2E5D" font-family="Arial, sans-serif" font-size="34" font-weight="700">POLYSTAR</text>
-  <text x="140" y="82" fill="#0B0F19" font-family="Arial, sans-serif" font-size="18">Nanotech Ltd</text>
-  <circle cx="390" cy="35" r="14" fill="#00C853"/>
-</svg>

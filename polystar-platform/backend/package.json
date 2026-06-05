@@ -5,13 +5,13 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p ../shared/tsconfig.json && node ../node_modules/tsx/dist/cli.mjs watch src/server.ts",
-    "build": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p ../shared/tsconfig.json && node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p tsconfig.json && node -e \"require('node:fs').accessSync('dist/server.js')\"",
+    "dev": "tsc -p ../shared/tsconfig.json && tsx watch src/server.ts",
+    "build": "tsc -p ../shared/tsconfig.json && tsc -p tsconfig.json && node -e \"require('node:fs').accessSync('dist/server.js')\"",
     "start": "node dist/server.js",
-    "seed": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p ../shared/tsconfig.json && node ../node_modules/tsx/dist/cli.mjs src/database/seed.ts",
-    "lint": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p ../shared/tsconfig.json && node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc --noEmit",
-    "typecheck": "node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc -p ../shared/tsconfig.json && node --max-old-space-size=4096 ../node_modules/typescript/bin/tsc --noEmit",
-    "test": "node ../node_modules/tsx/dist/cli.mjs --test src/**/*.test.ts"
+    "seed": "tsc -p ../shared/tsconfig.json && tsx src/database/seed.ts",
+    "lint": "tsc -p ../shared/tsconfig.json && tsc --noEmit",
+    "typecheck": "tsc -p ../shared/tsconfig.json && tsc --noEmit",
+    "test": "tsx --test src/**/*.test.ts"
   },
   "dependencies": {
     "@polystar/shared": "file:../shared",

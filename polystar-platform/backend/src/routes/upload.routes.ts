@@ -6,4 +6,10 @@ import { upload } from "../uploads/index.js";
 
 export const uploadRoutes = Router();
 
-uploadRoutes.post("/", authenticate, authorize("super_admin", "admin", "editor", "client", "uploads:write"), upload.single("file"), uploadController.uploadFile);
+uploadRoutes.post(
+  "/",
+  authenticate,
+  authorize("super_admin", "admin", "editor", "partner", "client", "uploads:write"),
+  upload.single("file"),
+  uploadController.uploadFile
+);

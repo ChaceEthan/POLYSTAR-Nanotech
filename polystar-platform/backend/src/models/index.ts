@@ -22,6 +22,7 @@ const contentSchemaDefinition: Record<string, any> = {
   location: String,
   client: String,
   imageUrl: String,
+  videoUrl: String,
   attachments: [String],
   tags: [String],
   status: {
@@ -57,7 +58,7 @@ const userSchema = new Schema(
     passwordHash: { type: String, required: true, select: false },
     company: String,
     phone: String,
-    role: { type: String, enum: ["super_admin", "admin", "editor", "client"], default: "client", index: true },
+    role: { type: String, enum: ["super_admin", "admin", "editor", "partner", "client"], default: "client", index: true },
     permissions: { type: [String], default: [] },
     status: { type: String, default: "active", index: true },
     lastLoginAt: Date,

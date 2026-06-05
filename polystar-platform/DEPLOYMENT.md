@@ -10,7 +10,7 @@ Do not commit real `.env` secrets. Configure production environment variables in
 
 ## Frontend: Vercel
 
-Vercel uses `frontend/vercel.json` when the project root is `polystar-platform/frontend`.
+Vercel runs only the frontend project using `frontend/vercel.json` when the project root is `polystar-platform/frontend`.
 
 Build settings:
 
@@ -25,7 +25,7 @@ Build settings:
 Required Vercel environment variables:
 
 - `NEXT_PUBLIC_SITE_URL`
-- `NEXT_PUBLIC_API_BASE_URL`
+- `NEXT_PUBLIC_API_URL`
 - `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
 - `GOOGLE_SEARCH_CONSOLE_VERIFICATION` when Google verification is ready
 - Optional analytics/maps/recaptcha variables when those integrations are enabled
@@ -50,9 +50,9 @@ Render deploys only the backend service from the repository-root `render.yaml`.
 Build settings:
 
 - Runtime: Node
-- Root directory: `polystar-platform/backend`
-- Build command: `npm install && npm run build`
-- Start command: `node dist/server.js`
+- Root directory: `polystar-platform`
+- Build command: `npm install && npm run build --workspace backend`
+- Start command: `npm run start --workspace backend`
 - Health check path: `/api/v1/health`
 - Node version: `22.x`
 
@@ -104,5 +104,5 @@ npm run dev
 Then verify:
 
 - Frontend URL from `NEXT_PUBLIC_SITE_URL`
-- Backend health URL from `NEXT_PUBLIC_API_BASE_URL` plus `/health`
+- Backend health URL from `NEXT_PUBLIC_API_URL` plus `/health`
 - Major pages: Home, About, Services, Projects, Portfolio, Blog, Contact, Admin Dashboard, Client Portal

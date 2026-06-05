@@ -1,9 +1,9 @@
 import { COMPANY, SUPPORTED_LANGUAGES } from "@polystar/shared";
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 
 if (!apiBaseUrl) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is required.");
+  throw new Error("NEXT_PUBLIC_API_URL is required.");
 }
 
 export const siteConfig = {

@@ -18,6 +18,18 @@ async function seed() {
     { upsert: true }
   );
 
+  await RoleModel.updateOne(
+    { slug: "partner" },
+    {
+      title: "Partner",
+      slug: "partner",
+      status: "active",
+      permissions: ["content:write", "uploads:write"],
+      metadata: { protected: true }
+    },
+    { upsert: true }
+  );
+
   await UserModel.updateOne(
     { email: process.env.ADMIN_SEED_EMAIL ?? "admin@polystar.rw" },
     {
@@ -30,6 +42,21 @@ async function seed() {
     },
     { upsert: true }
   );
+
+  if (process.env.PARTNER_SEED_EMAIL && process.env.PARTNER_SEED_PASSWORD) {
+    await UserModel.updateOne(
+      { email: process.env.PARTNER_SEED_EMAIL },
+      {
+        name: process.env.PARTNER_SEED_NAME ?? "POLYSTAR Partner",
+        email: process.env.PARTNER_SEED_EMAIL,
+        passwordHash: await bcrypt.hash(process.env.PARTNER_SEED_PASSWORD, 12),
+        role: "partner",
+        permissions: ["content:write", "uploads:write"],
+        status: "active"
+      },
+      { upsert: true }
+    );
+  }
 
   console.log(`Seed completed for ${env.NODE_ENV}.`);
   await disconnectDatabase();

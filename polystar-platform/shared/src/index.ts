@@ -91,6 +91,6 @@ export type AuthUser = {
   id: string;
   name: string;
   email: string;
-  role: "super_admin" | "admin" | "editor" | "client";
+  role: "super_admin" | "admin" | "editor" | "partner" | "client";
   permissions: string[];
 };

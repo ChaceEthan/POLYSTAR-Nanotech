@@ -30,10 +30,12 @@ apiRoutes.use("/auth", authRoutes);
 apiRoutes.use("/dashboard", dashboardRoutes);
 apiRoutes.use("/", requestRoutes);
 
-apiRoutes.use("/projects", crudRoutes(services.projects, { publicRead: true }));
-apiRoutes.use("/portfolio", crudRoutes(services.portfolio, { publicRead: true }));
-apiRoutes.use("/blog", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true }));
-apiRoutes.use("/blog-posts", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true }));
+const partnerContentAccess = { readRoles: ["partner"], writeRoles: ["partner"] };
+
+apiRoutes.use("/projects", crudRoutes(services.projects, { publicRead: true, writeRoles: ["partner"] }));
+apiRoutes.use("/portfolio", crudRoutes(services.portfolio, { publicRead: true, writeRoles: ["partner"] }));
+apiRoutes.use("/blog", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true, writeRoles: ["partner"] }));
+apiRoutes.use("/blog-posts", crudRoutes(services.blog_posts, { publicRead: true, slugRoute: true, writeRoles: ["partner"] }));
 apiRoutes.use("/services", crudRoutes(services.services, { publicRead: true }));
 apiRoutes.use("/tickets", supportTicketRoutes);
 apiRoutes.use("/support-tickets", supportTicketRoutes);
@@ -91,6 +93,9 @@ function clientNotificationFilter(req: Request) {
 }
 
 const clientReadableCollectionOptions: Partial<Record<(typeof adminCollections)[number], Parameters<typeof crudRoutes>[1]>> = {
+  case_studies: partnerContentAccess,
+  gallery: partnerContentAccess,
+  videos: partnerContentAccess,
   documents: { readRoles: ["client"], readFilter: clientOwnedContentFilter },
   reports: { readRoles: ["client"], readFilter: clientOwnedContentFilter },
   notifications: { readRoles: ["client"], readFilter: clientNotificationFilter }

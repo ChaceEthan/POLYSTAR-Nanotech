@@ -21,9 +21,9 @@ npm run seed
 npm run dev
 ```
 
-Frontend: `http://localhost:3000`
+Frontend: `https://www.polystar.rw`
 
-Backend: `http://localhost:5000/api/v1`
+Backend API: `https://polystar-nanotech.onrender.com/api/v1`
 
 ## Scripts
 

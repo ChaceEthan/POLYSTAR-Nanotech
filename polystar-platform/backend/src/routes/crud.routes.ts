@@ -11,13 +11,25 @@ type CrudRouteOptions = {
   slugRoute?: boolean;
   readRoles?: string[];
   readPermissions?: string[];
+  writeRoles?: string[];
+  writePermissions?: string[];
   readFilter?: (req: Request) => Record<string, any>;
 };
 
 export function crudRoutes(service: GenericCrudService<any>, options: CrudRouteOptions = {}) {
   const router = Router();
   const controller = createCrudController(service, { readFilter: options.readFilter });
-  const writeGuard = [authenticate, authorize("super_admin", "admin", "editor", "content:write")];
+  const writeGuard = [
+    authenticate,
+    authorize(
+      "super_admin",
+      "admin",
+      "editor",
+      ...(options.writeRoles ?? []),
+      "content:write",
+      ...(options.writePermissions ?? [])
+    )
+  ];
 
   const readGuard = options.publicRead
     ? []

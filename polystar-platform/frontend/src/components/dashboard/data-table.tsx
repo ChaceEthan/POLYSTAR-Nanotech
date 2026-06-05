@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -30,13 +31,17 @@ export function DataTable({
   rows = [],
   isLoading = false,
   error,
-  emptyMessage = "No records found."
+  emptyMessage = "No records found.",
+  actions
 }: {
   rows?: DashboardRow[];
   isLoading?: boolean;
   error?: string;
   emptyMessage?: string;
+  actions?: (row: DashboardRow) => ReactNode;
 }) {
+  const colSpan = actions ? 5 : 4;
+
   return (
     <Table>
       <TableHeader>
@@ -45,27 +50,28 @@ export function DataTable({
           <TableHead>Owner</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Updated</TableHead>
+          {actions && <TableHead className="text-right">Actions</TableHead>}
         </TableRow>
       </TableHeader>
       <TableBody>
         {isLoading &&
           Array.from({ length: 4 }).map((_, index) => (
             <TableRow key={`loading-${index}`}>
-              <TableCell colSpan={4}>
+              <TableCell colSpan={colSpan}>
                 <div className="h-5 w-full animate-pulse rounded bg-muted" />
               </TableCell>
             </TableRow>
           ))}
         {!isLoading && error && (
           <TableRow>
-            <TableCell colSpan={4} className="h-24 text-sm text-destructive">
+            <TableCell colSpan={colSpan} className="h-24 text-sm text-destructive">
               {error}
             </TableCell>
           </TableRow>
         )}
         {!isLoading && !error && rows.length === 0 && (
           <TableRow>
-            <TableCell colSpan={4} className="h-24 text-sm text-muted-foreground">
+            <TableCell colSpan={colSpan} className="h-24 text-sm text-muted-foreground">
               {emptyMessage}
             </TableCell>
           </TableRow>
@@ -78,6 +84,7 @@ export function DataTable({
               <Badge variant={row.status === "active" ? "accent" : "outline"}>{row.status}</Badge>
             </TableCell>
             <TableCell className="text-muted-foreground">{row.updated}</TableCell>
+            {actions && <TableCell className="text-right">{actions(row)}</TableCell>}
           </TableRow>
         ))}
       </TableBody>

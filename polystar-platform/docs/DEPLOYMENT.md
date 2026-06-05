@@ -22,7 +22,7 @@ Deploy the frontend as a separate Vercel project with:
 Set:
 
 - `NEXT_PUBLIC_SITE_URL`
-- `NEXT_PUBLIC_API_BASE_URL`
+- `NEXT_PUBLIC_API_URL`
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID`
 - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 - `NEXT_PUBLIC_QR_COMPANY_PROFILE_URL`
@@ -32,9 +32,9 @@ Set:
 
 Deploy only the backend to Render with:
 
-- Root directory: `polystar-platform/backend`
-- Build command: `npm install && npm run build`
-- Start command: `node dist/server.js`
+- Root directory: `polystar-platform`
+- Build command: `npm install && npm run build --workspace backend`
+- Start command: `npm run start --workspace backend`
 - Node version: `22.x`
 
 Required variables:

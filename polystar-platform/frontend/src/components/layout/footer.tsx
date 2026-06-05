@@ -37,9 +37,13 @@ export function Footer() {
         <QrCodeCard />
       </div>
       <div className="border-t border-white/10 py-4">
-        <div className="container flex flex-col gap-2 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container flex flex-col gap-3 text-xs text-slate-400 lg:flex-row lg:items-center lg:justify-between">
           <span>© {new Date().getFullYear()} POLYSTAR Nanotech Ltd. All rights reserved.</span>
-          <span>Engineering from Kigali for industry, infrastructure, and innovation.</span>
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
+            <Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="hover:text-white">Terms & Conditions</Link>
+            <Link href="/contact-us" className="hover:text-white">Contact Us</Link>
+          </div>
         </div>
       </div>
     </footer>

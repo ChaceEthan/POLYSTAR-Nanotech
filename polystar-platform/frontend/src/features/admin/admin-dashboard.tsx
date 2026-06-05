@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, BookOpenText, BriefcaseBusiness, Contact, FileQuestion, FolderKanban, HelpCircle, Layers3, Users } from "lucide-react";
+import { Activity, BookOpenText, BriefcaseBusiness, Contact, FileQuestion, FolderKanban, HelpCircle, Layers3, Megaphone, Newspaper, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { adminMenuItems } from "@/lib/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ import { StatCard } from "@/components/dashboard/stat-card";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { getDashboardSummary } from "@/services/dashboard-service";
 
-const icons = [Users, FolderKanban, FileQuestion, Activity, Contact, HelpCircle, BookOpenText, Layers3, BriefcaseBusiness];
+const icons = [Users, FolderKanban, FileQuestion, Activity, Contact, HelpCircle, BookOpenText, Newspaper, Megaphone, Layers3, BriefcaseBusiness];
 
 function metricChange(isLoading: boolean, error: unknown, fallback: string) {
   if (isLoading) return "Loading summary";
@@ -42,6 +42,8 @@ export function AdminDashboard() {
     { label: "Contacts", value: String(counts?.contacts ?? 0), change: change("Mongo contacts count") },
     { label: "Tickets", value: String(counts?.tickets ?? 0), change: change("Mongo tickets count") },
     { label: "Blog Posts", value: String(counts?.blogPosts ?? 0), change: change("Mongo blog count") },
+    { label: "News", value: String(counts?.news ?? 0), change: change("Mongo news count") },
+    { label: "Company Updates", value: String(counts?.companyUpdates ?? 0), change: change("Mongo updates count") },
     { label: "Portfolio Items", value: String(counts?.portfolioItems ?? 0), change: change("Mongo portfolio count") },
     { label: "Case Studies", value: String(counts?.caseStudies ?? 0), change: change("Mongo case study count") }
   ];

@@ -1,6 +1,59 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="38" fill="#0B0F19"/>
-  <path d="M27 55H84C102 55 115 66 115 82C115 98 102 109 84 109H52V136H27V55ZM52 76V89H83C88 89 91 86 91 82C91 78 88 76 83 76H52Z" fill="#11B5B8"/>
-  <circle cx="113" cy="91" r="37" fill="#0A2E5D" stroke="#F8FAFC" stroke-width="6"/>
-  <path d="M113 66V87M113 96V122M87 91H108M118 91H140" stroke="#00AEEF" stroke-width="4" stroke-linecap="round"/>
+<svg width="2048" height="640" viewBox="0 0 2048 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">POLYSTAR Nanotech Ltd logo</title>
+  <desc id="desc">Official POLYSTAR Nanotech Ltd engineering technology logo with circuit mark and teal wordmark.</desc>
+  <rect width="2048" height="640" fill="transparent"/>
+  <g opacity="0.98">
+    <path d="M78 118H305C371 118 418 158 418 219C418 281 371 321 305 321H174V438H78V118ZM174 198V242H300C316 242 327 234 327 220C327 206 316 198 300 198H174Z" fill="#11B5B8"/>
+    <path d="M74 197H237M74 239H222M74 281H250M74 323H216M74 365H240" stroke="#0A2E5D" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path d="M198 103H272L302 74H408L437 45H644L670 20H768" stroke="#0A2E5D" stroke-width="5"/>
+    <path d="M190 146H287L318 116H458L486 88H720L744 64H801" stroke="#00AEEF" stroke-width="5"/>
+    <path d="M206 188H330L360 158H512L544 126H758L786 98H879" stroke="#8FB4CD" stroke-width="5"/>
+    <path d="M194 414H285L314 443H447L474 470H641L666 495H744" stroke="#0A2E5D" stroke-width="5"/>
+    <path d="M176 462H310L338 493H492L520 520H701" stroke="#00AEEF" stroke-width="5"/>
+    <circle cx="272" cy="103" r="8" fill="#0A2E5D"/>
+    <circle cx="408" cy="74" r="8" fill="#00AEEF"/>
+    <circle cx="644" cy="45" r="8" fill="#8FB4CD"/>
+    <circle cx="768" cy="20" r="8" fill="#F8FAFC"/>
+    <circle cx="287" cy="146" r="8" fill="#0A2E5D"/>
+    <circle cx="458" cy="116" r="8" fill="#00AEEF"/>
+    <circle cx="720" cy="88" r="8" fill="#8FB4CD"/>
+    <circle cx="879" cy="98" r="8" fill="#F8FAFC"/>
+    <circle cx="285" cy="414" r="8" fill="#0A2E5D"/>
+    <circle cx="447" cy="443" r="8" fill="#00AEEF"/>
+    <circle cx="641" cy="470" r="8" fill="#8FB4CD"/>
+    <circle cx="744" cy="495" r="8" fill="#F8FAFC"/>
+  </g>
+  <g>
+    <circle cx="518" cy="278" r="142" fill="url(#lens)" stroke="url(#lensStroke)" stroke-width="18"/>
+    <circle cx="518" cy="278" r="86" fill="#0A2E5D" opacity="0.45"/>
+    <path d="M475 279C475 255 494 236 518 236C542 236 561 255 561 279C561 303 542 322 518 322C494 322 475 303 475 279Z" fill="#11B5B8"/>
+    <path d="M518 170V256M518 302V384M410 278H492M544 278H626" stroke="#E9F4F8" stroke-width="10" stroke-linecap="round"/>
+    <path d="M397 244H457L480 221H552L574 199H632" stroke="#00AEEF" stroke-width="5" stroke-linecap="round"/>
+    <path d="M397 312H457L480 335H552L574 357H632" stroke="#8FB4CD" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g fill="#11B5B8">
+    <path d="M686 118H783V354H965V438H686V118Z"/>
+    <path d="M960 118H1069L1169 274L1268 118H1377L1218 356V438H1120V356L960 118Z"/>
+    <path d="M1360 118H1612L1565 198H1447C1426 198 1413 207 1413 222C1413 237 1426 246 1447 246H1538C1605 246 1647 283 1647 341C1647 400 1605 438 1537 438H1322V358H1530C1550 358 1563 350 1563 334C1563 319 1550 311 1530 311H1438C1371 311 1329 274 1329 216C1329 157 1372 118 1440 118H1360Z"/>
+    <path d="M1630 118H1900V202H1814V438H1716V202H1630V118Z"/>
+    <path d="M1880 438L2014 118H2125L2258 438H2154L2134 386H2002L1982 438H1880ZM2028 310H2108L2068 206L2028 310Z" transform="translate(-220 0)"/>
+    <path d="M1882 118H2070C2145 118 2194 160 2194 226C2194 272 2170 306 2128 323L2212 438H2102L2030 337H1979V438H1882V118ZM1979 198V260H2063C2084 260 2098 248 2098 229C2098 210 2084 198 2063 198H1979Z" transform="translate(-40 0)"/>
+  </g>
+  <path d="M610 456H1940" stroke="#404040" stroke-width="18" stroke-linecap="round"/>
+  <text x="780" y="592" fill="#424242" font-family="Arial, Helvetica, sans-serif" font-size="176" font-weight="700" letter-spacing="0">nanotech</text>
+  <defs>
+    <radialGradient id="lens" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(470 201) rotate(57) scale(239)">
+      <stop stop-color="#F8FAFC" stop-opacity="0.96"/>
+      <stop offset="0.32" stop-color="#11B5B8" stop-opacity="0.42"/>
+      <stop offset="0.62" stop-color="#0A2E5D" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#0B0F19" stop-opacity="0.72"/>
+    </radialGradient>
+    <linearGradient id="lensStroke" x1="386" y1="146" x2="636" y2="408" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.5" stop-color="#B8C0C6"/>
+      <stop offset="1" stop-color="#3A3A3A"/>
+    </linearGradient>
+  </defs>
 </svg>

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send } from "lucide-react";
+import { CheckCircle2, Send } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,9 +21,37 @@ const schema = z.object({
   message: z.string().min(10)
 });
 
+const formCopy: Record<RequestFormType, { title: string; description: string; button: string; success: string }> = {
+  contact: {
+    title: "Contact POLYSTAR",
+    description: "A POLYSTAR technical representative will respond with next steps.",
+    button: "Send Request",
+    success: "Request submitted successfully."
+  },
+  consultation: {
+    title: "Request Consultation",
+    description: "Share the engineering context so our team can prepare the right advisory path.",
+    button: "Send Request",
+    success: "Consultation submitted successfully."
+  },
+  quotation: {
+    title: "Get Quotation",
+    description: "Describe the scope, service line, and budget signals needed for a useful estimate.",
+    button: "Get Quotation",
+    success: "Quotation submitted successfully."
+  },
+  siteVisit: {
+    title: "Book Site Visit",
+    description: "Tell us where the assessment is needed and what systems should be reviewed.",
+    button: "Send Request",
+    success: "Site visit submitted successfully."
+  }
+};
+
 export function RequestForm({ type }: { type: RequestFormType }) {
   const requests = usePublicRequests();
   const mutation = requests[type];
+  const copy = formCopy[type];
   const [successMessage, setSuccessMessage] = useState<string | undefined>();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const form = useForm<z.infer<typeof schema>>({
@@ -43,9 +71,9 @@ export function RequestForm({ type }: { type: RequestFormType }) {
     setErrorMessage(undefined);
 
     try {
-      await mutation.mutateAsync(values);
+      const response = await mutation.mutateAsync(values);
       form.reset();
-      setSuccessMessage("Request submitted successfully");
+      setSuccessMessage(response.message ?? copy.success);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Unable to submit this request. Please try again.");
     }
@@ -54,8 +82,8 @@ export function RequestForm({ type }: { type: RequestFormType }) {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
       <div>
-        <h2 className="text-xl font-semibold">Submit Request</h2>
-        <p className="mt-1 text-sm text-muted-foreground">A POLYSTAR technical representative will respond with next steps.</p>
+        <h2 className="text-xl font-semibold">{copy.title}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{copy.description}</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
@@ -85,11 +113,20 @@ export function RequestForm({ type }: { type: RequestFormType }) {
         <Label htmlFor="message">Message</Label>
         <Textarea id="message" {...form.register("message")} />
       </div>
-      {successMessage && <p className="text-sm font-medium text-accent">{successMessage}</p>}
-      {errorMessage && <p className="text-sm font-medium text-destructive">{errorMessage}</p>}
+      {successMessage && (
+        <div role="status" className="flex items-start gap-2 rounded-md border border-accent/30 bg-accent/10 p-3 text-sm font-medium text-accent">
+          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>{successMessage}</span>
+        </div>
+      )}
+      {errorMessage && (
+        <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm font-medium text-destructive">
+          {errorMessage}
+        </div>
+      )}
       <Button type="submit" disabled={form.formState.isSubmitting || mutation.isPending}>
         <Send className="h-4 w-4" />
-        {form.formState.isSubmitting || mutation.isPending ? "Submitting..." : "Send Request"}
+        {form.formState.isSubmitting || mutation.isPending ? "Submitting..." : copy.button}
       </Button>
     </form>
   );

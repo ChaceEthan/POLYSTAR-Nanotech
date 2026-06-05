@@ -49,6 +49,8 @@ export const resources = {
   portfolio: createResourceService("/portfolio"),
   services: createResourceService("/services"),
   blogPosts: createResourceService("/blog-posts"),
+  news: createResourceService("/news"),
+  companyUpdates: createResourceService("/company-updates"),
   contacts: createResourceService("/contacts"),
   quotations: createResourceService("/quotations"),
   consultations: createResourceService("/consultations"),

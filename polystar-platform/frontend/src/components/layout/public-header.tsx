@@ -44,6 +44,11 @@ export function PublicHeader() {
               {item.label}
             </Link>
           ))}
+          <Button asChild size="sm" className="mx-3 mt-2 justify-center">
+            <Link href="/get-quotation" onClick={() => setOpen(false)}>
+              Get Quotation
+            </Link>
+          </Button>
           <div className="flex items-center justify-between gap-2 px-3 py-2">
             <LanguageSwitcher />
             <ThemeToggle />

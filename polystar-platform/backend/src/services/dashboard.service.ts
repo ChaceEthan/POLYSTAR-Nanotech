@@ -9,6 +9,8 @@ export type DashboardSummary = {
   contacts: number;
   tickets: number;
   blogPosts: number;
+  news: number;
+  companyUpdates: number;
   portfolioItems: number;
   caseStudies: number;
 };
@@ -21,6 +23,8 @@ const summaryCollections = [
   { key: "contacts", collection: "contacts" },
   { key: "tickets", collection: "support_tickets" },
   { key: "blogPosts", collection: "blog_posts" },
+  { key: "news", collection: "news" },
+  { key: "companyUpdates", collection: "company_updates" },
   { key: "portfolioItems", collection: "portfolio" },
   { key: "caseStudies", collection: "case_studies" }
 ] as const;
@@ -33,6 +37,8 @@ const emptySummary: DashboardSummary = {
   contacts: 0,
   tickets: 0,
   blogPosts: 0,
+  news: 0,
+  companyUpdates: 0,
   portfolioItems: 0,
   caseStudies: 0
 };

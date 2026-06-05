@@ -1,4 +1,5 @@
-import type { Model } from "mongoose";
+import mongoose, { type Model } from "mongoose";
+import { AppError } from "../middleware/error.js";
 
 export type ListOptions = {
   page?: number;
@@ -45,7 +46,17 @@ export class GenericRepository<T = any> {
     this.collectionName = model.collection.name;
   }
 
+  private ensureDatabaseReady() {
+    if (mongoose.connection.readyState !== 1) {
+      throw new AppError("Database connection is unavailable. Please try again shortly.", 503, "DATABASE_UNAVAILABLE", {
+        readyState: mongoose.connection.readyState,
+        collection: this.collectionName
+      });
+    }
+  }
+
   async list(options: ListOptions = {}) {
+    this.ensureDatabaseReady();
     const page = Math.max(Number(options.page ?? 1), 1);
     const limit = Math.min(Math.max(Number(options.limit ?? 20), 1), 100);
     const filter: Record<string, any> = { ...(options.filter ?? {}) };
@@ -87,22 +98,27 @@ export class GenericRepository<T = any> {
   }
 
   async findById(id: string) {
+    this.ensureDatabaseReady();
     return this.model.findById(id).lean();
   }
 
   async findOne(filter: Record<string, any>) {
+    this.ensureDatabaseReady();
     return this.model.findOne(filter).lean();
   }
 
   async create(payload: Partial<T>) {
+    this.ensureDatabaseReady();
     return this.model.create(payload);
   }
 
   async update(id: string, payload: Record<string, any>) {
+    this.ensureDatabaseReady();
     return this.model.findByIdAndUpdate(id, payload, { new: true, runValidators: true }).lean();
   }
 
   async delete(id: string) {
+    this.ensureDatabaseReady();
     return this.model.findByIdAndDelete(id).lean();
   }
 }

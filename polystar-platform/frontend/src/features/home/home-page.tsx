@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAnalytics } from "@/hooks/use-platform-api";
 import { trackEvent } from "@/lib/analytics";
+import { industryImages, teamMembers } from "@/lib/public-content";
 
 const services = [
   { icon: Factory, title: "Industrial Automation", text: "PLC, SCADA, instrumentation, process control, commissioning, and plant optimization.", tags: ["PLC", "SCADA", "Controls"] },
@@ -78,13 +79,21 @@ export function HomePage() {
   return (
     <>
       <section className="relative isolate overflow-hidden bg-polystar-dark text-white">
-        <div className="absolute inset-0 -z-10 bg-[url('/images/hero-industrial.svg')] bg-cover bg-center opacity-30" />
-        <div className="absolute inset-0 -z-10 industrial-grid opacity-80" />
-        <div className="container grid min-h-[86vh] gap-10 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <PolystarLogo priority tone="light" className="mb-8 max-w-[300px] sm:max-w-[420px]" />
+        <Image
+          src={industryImages[0].image}
+          alt={industryImages[0].alt}
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-polystar-dark/78" />
+        <div className="absolute inset-0 -z-10 industrial-grid opacity-35" />
+        <div className="container flex min-h-[82vh] items-end py-16">
+          <motion.div className="max-w-5xl pb-4" initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <PolystarLogo priority tone="light" className="mb-8 max-w-[300px] sm:max-w-[460px]" />
             <Badge variant="secondary">POLYSTAR NANOTECH LTD · Kigali, Rwanda</Badge>
-            <h1 className="mt-5 max-w-4xl text-[length:var(--font-size-display)] font-semibold leading-none">
+            <h1 className="mt-5 max-w-5xl text-[length:var(--font-size-display)] font-semibold leading-none">
               Engineering Smart Solutions for Industry, Infrastructure & Innovation
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
@@ -111,29 +120,13 @@ export function HomePage() {
                 <Link href="/projects">Explore Projects</Link>
               </Button>
             </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="relative min-h-[360px] overflow-hidden rounded-lg border border-white/15 bg-white/8 p-5 shadow-enterprise"
-          >
-            <div className="absolute inset-0 circuit-lines opacity-35" />
-            <div className="relative grid gap-4">
-              {["Automation", "IIoT", "Software", "Infrastructure"].map((item, index) => (
-                <div key={item} className="flex items-center justify-between rounded-lg border border-white/15 bg-polystar-dark/80 p-4">
-                  <span className="text-sm font-semibold">{item}</span>
-                  <span className="font-mono text-xs text-secondary">SYS-0{index + 1}</span>
+            <div className="mt-10 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map(([value, label]) => (
+                <div key={label} className="border-l border-white/30 bg-white/10 px-4 py-3">
+                  <div className="font-mono text-2xl font-semibold text-secondary">{value}</div>
+                  <p className="mt-1 text-xs font-medium uppercase text-slate-200">{label}</p>
                 </div>
               ))}
-              <Image
-                src="/images/technology-showcase.svg"
-                alt="Connected industrial technology stack"
-                width={900}
-                height={620}
-                priority
-                className="mt-2 h-auto w-full rounded-md"
-              />
             </div>
           </motion.div>
         </div>
@@ -152,6 +145,35 @@ export function HomePage() {
                 <ShieldCheck className="mb-4 h-5 w-5 text-accent" />
                 {item}
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-y bg-muted/40">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Industry Images"
+            title="Visual coverage across engineering, industrial systems, software, data, cloud, and delivery teams."
+            description="Professional imagery is used across the platform with responsive sizing, descriptive alt text, and lazy loading through Next.js image optimization."
+          />
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {industryImages.map((item) => (
+              <article key={item.title} className="overflow-hidden rounded-lg border bg-card shadow-sm">
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={item.image}
+                    alt={item.alt}
+                    fill
+                    sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <p className="text-xs font-semibold uppercase text-secondary">{item.category}</p>
+                  <h3 className="mt-1 text-base font-semibold">{item.title}</h3>
+                </div>
+              </article>
             ))}
           </div>
         </div>
@@ -252,6 +274,30 @@ export function HomePage() {
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
               Our innovation practice supports feasibility studies, technical architecture, product development, laboratory validation, and pilot deployment.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-y bg-background">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Team"
+            title="A professional delivery structure for leadership, engineering, operations, and consulting."
+            description="CMS records can replace these placeholders as team profiles are published."
+          />
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {teamMembers.map((member) => (
+              <Card key={`${member.group}-${member.role}`}>
+                <CardHeader>
+                  <Badge variant="outline">{member.group}</Badge>
+                  <CardTitle className="text-lg">{member.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm font-semibold text-primary">{member.role}</p>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{member.summary}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>

@@ -62,6 +62,84 @@ export type BlogArticle = {
 const technologyImage = "/images/technology-showcase.svg";
 const industrialImage = "/images/hero-industrial.svg";
 
+export const industryImages = [
+  {
+    title: "Engineering Systems",
+    category: "Engineering",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=82",
+    alt: "Engineers reviewing industrial infrastructure drawings on site"
+  },
+  {
+    title: "Embedded Technology",
+    category: "Technology",
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1200&q=82",
+    alt: "Close view of advanced electronic circuit boards for embedded systems"
+  },
+  {
+    title: "Industrial Systems",
+    category: "Industrial systems",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=82",
+    alt: "Industrial engineer inspecting automated production equipment"
+  },
+  {
+    title: "Infrastructure Delivery",
+    category: "Infrastructure",
+    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=82",
+    alt: "Modern infrastructure environment prepared for smart monitoring systems"
+  },
+  {
+    title: "Software Development",
+    category: "Software development",
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=82",
+    alt: "Technical team collaborating on software development workstations"
+  },
+  {
+    title: "Data Systems",
+    category: "Data systems",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=82",
+    alt: "Operational analytics dashboards used for data system monitoring"
+  },
+  {
+    title: "Cloud Operations",
+    category: "Cloud systems",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=82",
+    alt: "Server racks supporting cloud infrastructure and connected platforms"
+  },
+  {
+    title: "Technical Teams",
+    category: "Technical teams",
+    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=82",
+    alt: "Professional technical team planning engineering delivery"
+  }
+] as const;
+
+export const teamMembers = [
+  {
+    name: "Eng. Amani Niyoyita",
+    role: "Managing Director",
+    group: "Leadership",
+    summary: "Leads company strategy, technical partnerships, and multidisciplinary engineering delivery."
+  },
+  {
+    name: "Automation Engineering Lead",
+    role: "Controls and IIoT",
+    group: "Engineering",
+    summary: "Coordinates automation, embedded systems, telemetry, and field integration programs."
+  },
+  {
+    name: "Operations Coordinator",
+    role: "Delivery and Support",
+    group: "Operations",
+    summary: "Aligns project schedules, documentation, procurement, commissioning, and client follow-up."
+  },
+  {
+    name: "Technical Consulting Lead",
+    role: "Advisory and Training",
+    group: "Consulting",
+    summary: "Supports feasibility studies, technical audits, training design, and implementation planning."
+  }
+] as const;
+
 export const publicPageContent: PublicPageContent[] = [
   {
     slug: "about",

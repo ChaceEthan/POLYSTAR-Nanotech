@@ -35,6 +35,8 @@ export const publicPages = [
 
 export const adminSections = [
   "posts",
+  "news",
+  "company-updates",
   "projects",
   "gallery",
   "videos",
@@ -54,7 +56,10 @@ export const adminSections = [
 export const adminMenuItems = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/news", label: "News" },
+  { href: "/admin/company-updates", label: "Company Updates" },
   { href: "/admin/projects", label: "Projects" },
+  { href: "/admin/case-studies", label: "Case Studies" },
   { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/videos", label: "Videos" },
   { href: "/admin/documents", label: "Documents" },

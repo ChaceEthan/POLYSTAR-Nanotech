@@ -152,6 +152,8 @@ type ConnectOptions = {
 
 export async function connectDatabase({ retries = 3, retryDelayMs = 2000, failOnError = false }: ConnectOptions = {}) {
   mongoose.set("strictQuery", true);
+  mongoose.set("bufferCommands", false);
+  mongoose.set("bufferTimeoutMS", 0);
   await prepareMongoSrvResolver();
 
   if (mongoose.connection.readyState === 1) {
@@ -163,7 +165,8 @@ export async function connectDatabase({ retries = 3, retryDelayMs = 2000, failOn
     try {
       logger.info("Connecting to MongoDB Atlas", { attempt, retries });
       await mongoose.connect(env.MONGODB_URI, {
-        serverSelectionTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 8000,
+        socketTimeoutMS: 15000,
         maxPoolSize: 10
       });
       await initializeIndexes();

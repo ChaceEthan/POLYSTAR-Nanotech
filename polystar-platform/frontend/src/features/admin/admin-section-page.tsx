@@ -15,6 +15,7 @@ import { AdminSettingsSectionPage } from "./admin-settings-section-page";
 
 const adminResourcePaths: Record<string, string> = {
   posts: "/blog-posts",
+  "company-updates": "/company-updates",
   team: "/admins",
   "case-studies": "/case-studies",
   "blog-posts": "/blog-posts",
@@ -23,8 +24,35 @@ const adminResourcePaths: Record<string, string> = {
   "analytics-events": "/analytics-events"
 };
 
-const editableSections = new Set(["posts", "projects", "portfolio", "case-studies", "blog-posts", "services", "gallery", "videos", "documents", "team", "careers"]);
-const mediaSections = new Set(["posts", "projects", "portfolio", "case-studies", "blog-posts", "gallery", "videos", "documents", "team", "careers"]);
+const editableSections = new Set([
+  "posts",
+  "news",
+  "company-updates",
+  "projects",
+  "portfolio",
+  "case-studies",
+  "blog-posts",
+  "services",
+  "gallery",
+  "videos",
+  "documents",
+  "team",
+  "careers"
+]);
+const mediaSections = new Set([
+  "posts",
+  "news",
+  "company-updates",
+  "projects",
+  "portfolio",
+  "case-studies",
+  "blog-posts",
+  "gallery",
+  "videos",
+  "documents",
+  "team",
+  "careers"
+]);
 
 type UploadedMedia = {
   secure_url?: string;

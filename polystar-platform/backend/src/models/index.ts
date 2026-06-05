@@ -236,6 +236,8 @@ export const CaseStudyModel = createContentModel("CaseStudy", "case_studies");
 export const TestimonialModel = createContentModel("Testimonial", "testimonials");
 export const PartnerModel = createContentModel("Partner", "partners");
 export const BlogPostModel = createContentModel("BlogPost", "blog_posts");
+export const NewsModel = createContentModel("News", "news");
+export const CompanyUpdateModel = createContentModel("CompanyUpdate", "company_updates");
 export const DownloadModel = createContentModel("Download", "downloads");
 export const CareerModel = createContentModel("Career", "careers");
 export const QuotationModel = (mongoose.models.Quotation as Model<any>) || mongoose.model("Quotation", requestSchema.clone().set("collection", "quotations"));
@@ -268,6 +270,8 @@ export const modelRegistry = {
   testimonials: TestimonialModel,
   partners: PartnerModel,
   blog_posts: BlogPostModel,
+  news: NewsModel,
+  company_updates: CompanyUpdateModel,
   downloads: DownloadModel,
   careers: CareerModel,
   quotations: QuotationModel,

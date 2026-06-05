@@ -8,6 +8,8 @@ export type DashboardSummary = {
   contacts: number;
   tickets: number;
   blogPosts: number;
+  news: number;
+  companyUpdates: number;
   portfolioItems: number;
   caseStudies: number;
 };

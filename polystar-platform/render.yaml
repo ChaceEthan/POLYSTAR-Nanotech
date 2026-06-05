@@ -2,12 +2,13 @@ services:
   - type: web
     name: polystar-backend
     runtime: node
-    rootDir: polystar-platform/backend
+    rootDir: polystar-platform
     buildCommand: |
       npm install --include=dev
-      npm run build
-    startCommand: npm start
-    healthCheckPath: /api/v1/health
+      npm run build --workspace shared
+      npm run build --workspace backend
+    startCommand: npm run start --workspace backend
+    healthCheckPath: /api/v1/health/live
     envVars:
       - key: NODE_ENV
         value: production

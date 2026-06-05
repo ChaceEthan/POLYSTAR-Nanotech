@@ -14,6 +14,14 @@ import type { Request } from "express";
 
 export const apiRoutes = Router();
 
+apiRoutes.get("/health/live", (_req, res) => {
+  return res.status(200).json({
+    status: "ok",
+    service: "polystar-backend",
+    timestamp: new Date().toISOString()
+  });
+});
+
 apiRoutes.get("/health", (_req, res) => {
   const health = getDatabaseHealth();
   const connected = health.database === "connected";
@@ -54,6 +62,8 @@ const adminCollections = [
   "testimonials",
   "partners",
   "downloads",
+  "news",
+  "company_updates",
   "careers",
   "quotations",
   "consultations",

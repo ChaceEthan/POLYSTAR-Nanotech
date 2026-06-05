@@ -51,7 +51,7 @@ Build settings:
 
 - Runtime: Node
 - Root directory: `polystar-platform/backend`
-- Build command: `npm install` then `npm run build`
+- Build command: `npm install --include=dev` then `npm run build`
 - Start command: `npm start`
 - Health check path: `/api/v1/health`
 - Node version: `22.x`

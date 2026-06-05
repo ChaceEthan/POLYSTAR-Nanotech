@@ -4,7 +4,7 @@ services:
     runtime: node
     rootDir: polystar-platform/backend
     buildCommand: |
-      npm install
+      npm install --include=dev
       npm run build
     startCommand: npm start
     healthCheckPath: /api/v1/health

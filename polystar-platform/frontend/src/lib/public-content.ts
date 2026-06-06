@@ -72,8 +72,8 @@ export const industryImages = [
   {
     title: "Embedded Technology",
     category: "Technology",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1200&q=82",
-    alt: "Close view of advanced electronic circuit boards for embedded systems"
+    image: technologyImage,
+    alt: "POLYSTAR technology dashboard illustration for embedded systems and data monitoring"
   },
   {
     title: "Industrial Systems",

@@ -26,25 +26,25 @@ const formCopy: Record<RequestFormType, { title: string; description: string; bu
     title: "Contact POLYSTAR",
     description: "A POLYSTAR technical representative will respond with next steps.",
     button: "Send Request",
-    success: "Request submitted successfully."
+    success: "Request sent successfully"
   },
   consultation: {
     title: "Request Consultation",
     description: "Share the engineering context so our team can prepare the right advisory path.",
     button: "Send Request",
-    success: "Consultation submitted successfully."
+    success: "Request sent successfully"
   },
   quotation: {
     title: "Get Quotation",
     description: "Describe the scope, service line, and budget signals needed for a useful estimate.",
     button: "Get Quotation",
-    success: "Quotation submitted successfully."
+    success: "Request sent successfully"
   },
   siteVisit: {
     title: "Book Site Visit",
     description: "Tell us where the assessment is needed and what systems should be reviewed.",
     button: "Send Request",
-    success: "Site visit submitted successfully."
+    success: "Request sent successfully"
   }
 };
 
@@ -71,9 +71,9 @@ export function RequestForm({ type }: { type: RequestFormType }) {
     setErrorMessage(undefined);
 
     try {
-      const response = await mutation.mutateAsync(values);
+      await mutation.mutateAsync(values);
       form.reset();
-      setSuccessMessage(response.message ?? copy.success);
+      setSuccessMessage(copy.success);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Unable to submit this request. Please try again.");
     }

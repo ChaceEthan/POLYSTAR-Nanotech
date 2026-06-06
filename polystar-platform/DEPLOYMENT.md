@@ -50,10 +50,10 @@ Render deploys only the backend service from the repository-root `render.yaml`.
 Build settings:
 
 - Runtime: Node
-- Root directory: `polystar-platform/backend`
-- Build command: `npm install --include=dev` then `npm run build`
-- Start command: `npm start`
-- Health check path: `/api/v1/health`
+- Root directory: `polystar-platform`
+- Build command: `npm install --include=dev`, `npm run build --workspace shared`, then `npm run build --workspace backend`
+- Start command: `npm run start --workspace backend`
+- Health check path: `/api/v1/health/live`
 - Node version: `22.x`
 
 Required Render environment variables:
@@ -82,7 +82,8 @@ Required Render environment variables:
 
 Post-deploy checks:
 
-- `GET /api/v1/health` returns `{"status":"ok","database":"connected"}`
+- `GET /api/v1/health/live` returns service liveness for Render health checks
+- `GET /api/v1/health` returns `{"status":"ok","database":"connected"}` after MongoDB connects
 - `GET /api/v1/dashboard/summary` returns counts for an admin token
 - `POST /api/v1/upload` returns a Cloudinary secure URL for an authenticated upload
 - Client portal endpoints return real API-backed lists or empty states

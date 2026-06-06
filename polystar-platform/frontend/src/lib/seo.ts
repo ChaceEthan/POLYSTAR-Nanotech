@@ -32,11 +32,11 @@ export function createMetadata(title?: string, description = siteConfig.descript
     },
     icons: {
       icon: [
-        { url: brandAssets.favicon, type: "image/svg+xml" },
-        { url: brandAssets.appIcon, type: "image/svg+xml" }
+        { url: brandAssets.favicon, type: "image/png" },
+        { url: brandAssets.appIcon, type: "image/png" }
       ],
-      shortcut: [{ url: brandAssets.favicon, type: "image/svg+xml" }],
-      apple: [{ url: brandAssets.appleIcon, type: "image/svg+xml" }]
+      shortcut: [{ url: brandAssets.favicon, type: "image/png" }],
+      apple: [{ url: brandAssets.appleIcon, type: "image/png" }]
     },
     manifest: "/manifest.webmanifest",
     openGraph: {
@@ -49,8 +49,8 @@ export function createMetadata(title?: string, description = siteConfig.descript
       images: [
         {
           url: brandAssets.openGraph,
-          width: 2048,
-          height: 640,
+          width: 3000,
+          height: 900,
           alt: "POLYSTAR Nanotech Ltd"
         }
       ]

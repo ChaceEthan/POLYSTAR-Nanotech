@@ -32,9 +32,10 @@ Set:
 
 Deploy only the backend to Render with:
 
-- Root directory: `polystar-platform/backend`
-- Build command: `npm install` then `npm run build`
-- Start command: `npm start`
+- Root directory: `polystar-platform`
+- Build command: `npm install --include=dev`, `npm run build --workspace shared`, then `npm run build --workspace backend`
+- Start command: `npm run start --workspace backend`
+- Health check path: `/api/v1/health/live`
 - Node version: `22.x`
 
 Required variables:

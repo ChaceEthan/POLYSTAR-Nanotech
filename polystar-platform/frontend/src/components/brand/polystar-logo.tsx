@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { brandAssets } from "@/lib/brand";
+import { brandAssets, officialLogoDimensions } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 type LogoVariant = "full" | "mark";
@@ -24,12 +24,12 @@ export function PolystarLogo({
   const isMark = variant === "mark";
 
   return (
-    <span className={cn("inline-flex items-center", tone === "light" && "brightness-110", className)}>
+    <span className={cn("inline-flex items-center", className)} data-logo-tone={tone}>
       <Image
         src={logoSources[variant]}
         alt="POLYSTAR Nanotech Ltd"
-        width={isMark ? 320 : 320}
-        height={isMark ? 100 : 100}
+        width={officialLogoDimensions.width}
+        height={officialLogoDimensions.height}
         priority={priority}
         className={cn(isMark ? "h-10 w-auto" : "h-10 w-auto sm:h-12")}
       />

@@ -17,14 +17,14 @@ export default function manifest(): MetadataRoute.Manifest {
     icons: [
       {
         src: brandAssets.favicon,
-        sizes: "any",
-        type: "image/svg+xml",
+        sizes: "3000x900",
+        type: "image/png",
         purpose: "any"
       },
       {
         src: brandAssets.loadingMark,
-        sizes: "any",
-        type: "image/svg+xml",
+        sizes: "3000x900",
+        type: "image/png",
         purpose: "any"
       }
     ]

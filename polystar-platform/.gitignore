@@ -23,6 +23,8 @@ frontend-dev.log
 frontend-dev.err
 Dockerfile.local
 uploads/
+!backend/src/uploads/
+!backend/src/uploads/index.ts
 backend/uploads/
 frontend/public/uploads/
 *.local

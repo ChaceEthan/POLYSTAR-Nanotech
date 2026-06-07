@@ -10,11 +10,19 @@ type ValidationSchema = {
 export function validate(schema: ValidationSchema | ZodType) {
   return (req: Request, _res: Response, next: NextFunction) => {
     if ("safeParse" in schema) {
-      schema.parse({ body: req.body, params: req.params, query: req.query });
+      const result = schema.parse({ body: req.body, params: req.params, query: req.query }) as {
+        body?: unknown;
+        params?: unknown;
+        query?: unknown;
+      };
+
+      if (result.body) req.body = result.body;
+      if (result.params) req.params = result.params as Request["params"];
+      if (result.query) req.query = result.query as Request["query"];
     } else {
-      schema.body?.parse(req.body);
-      schema.params?.parse(req.params);
-      schema.query?.parse(req.query);
+      if (schema.body) req.body = schema.body.parse(req.body);
+      if (schema.params) req.params = schema.params.parse(req.params) as Request["params"];
+      if (schema.query) req.query = schema.query.parse(req.query) as Request["query"];
     }
     next();
   };

@@ -59,57 +59,72 @@ export type BlogArticle = {
   sections: Array<{ heading: string; body: string }>;
 };
 
-const technologyImage = "/images/technology-showcase.svg";
-const industrialImage = "/images/hero-industrial.svg";
+const imageParams = "?auto=format&fit=crop&w=1200&q=82";
+
+export const professionalImages = {
+  engineering: `https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122${imageParams}`,
+  nanotechnology: `https://images.unsplash.com/photo-1532187863486-abf9dbad1b69${imageParams}`,
+  embeddedTechnology: `https://images.unsplash.com/photo-1518770660439-4636190af475${imageParams}`,
+  manufacturing: `https://images.unsplash.com/photo-1581092160562-40aa08e78837${imageParams}`,
+  smartInfrastructure: `https://images.unsplash.com/photo-1494526585095-c41746248156${imageParams}`,
+  softwareDevelopment: `https://images.unsplash.com/photo-1519389950473-47ba0277781c${imageParams}`,
+  aiSolutions: `https://images.unsplash.com/photo-1551288049-bebda4e38f71${imageParams}`,
+  cloudSystems: `https://images.unsplash.com/photo-1558494949-ef010cbdcc31${imageParams}`,
+  consulting: `https://images.unsplash.com/photo-1521737604893-d14cc237f11d${imageParams}`,
+  research: `https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b${imageParams}`
+} as const;
+
+const technologyImage = professionalImages.embeddedTechnology;
+const industrialImage = professionalImages.manufacturing;
 
 export const industryImages = [
   {
     title: "Engineering Systems",
     category: "Engineering",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=82",
+    image: professionalImages.engineering,
     alt: "Engineers reviewing industrial infrastructure drawings on site"
   },
   {
-    title: "Embedded Technology",
-    category: "Technology",
-    image: technologyImage,
-    alt: "POLYSTAR technology dashboard illustration for embedded systems and data monitoring"
+    title: "Nanotechnology Research",
+    category: "Research",
+    image: professionalImages.nanotechnology,
+    alt: "Researchers using laboratory equipment for applied nanotechnology and materials analysis"
   },
   {
     title: "Industrial Systems",
     category: "Industrial systems",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=82",
+    image: professionalImages.manufacturing,
     alt: "Industrial engineer inspecting automated production equipment"
   },
   {
     title: "Infrastructure Delivery",
     category: "Infrastructure",
-    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=82",
+    image: professionalImages.smartInfrastructure,
     alt: "Modern infrastructure environment prepared for smart monitoring systems"
   },
   {
     title: "Software Development",
     category: "Software development",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=82",
+    image: professionalImages.softwareDevelopment,
     alt: "Technical team collaborating on software development workstations"
   },
   {
-    title: "Data Systems",
-    category: "Data systems",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=82",
-    alt: "Operational analytics dashboards used for data system monitoring"
+    title: "AI Solutions",
+    category: "AI and analytics",
+    image: professionalImages.aiSolutions,
+    alt: "Analytics dashboard used for AI-assisted industrial decision support"
   },
   {
     title: "Cloud Operations",
     category: "Cloud systems",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=82",
+    image: professionalImages.cloudSystems,
     alt: "Server racks supporting cloud infrastructure and connected platforms"
   },
   {
-    title: "Technical Teams",
-    category: "Technical teams",
-    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=82",
-    alt: "Professional technical team planning engineering delivery"
+    title: "Technology Consulting",
+    category: "Consulting",
+    image: professionalImages.consulting,
+    alt: "Professional technical team planning engineering and technology consulting delivery"
   }
 ] as const;
 

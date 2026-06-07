@@ -20,7 +20,11 @@ export function authenticate(req: Request, _res: Response, next: NextFunction) {
       permissions: payload.permissions
     };
     next();
-  } catch {
+  } catch (error) {
+    if (error instanceof AppError) {
+      return next(error);
+    }
+
     next(new AppError("Invalid or expired token", 401, "INVALID_TOKEN"));
   }
 }

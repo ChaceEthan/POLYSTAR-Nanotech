@@ -1,10 +1,11 @@
 import { COMPANY, SUPPORTED_LANGUAGES } from "@polystar/shared";
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
-
-if (!apiBaseUrl) {
-  throw new Error("NEXT_PUBLIC_API_URL is required.");
-}
+const DEFAULT_PRODUCTION_API_URL = "https://polystar-nanotech.onrender.com/api/v1";
+const DEFAULT_LOCAL_API_URL = "http://localhost:5000/api/v1";
+const apiBaseUrl = (
+  process.env.NEXT_PUBLIC_API_URL ??
+  (process.env.NODE_ENV === "production" ? DEFAULT_PRODUCTION_API_URL : DEFAULT_LOCAL_API_URL)
+).replace(/\/+$/, "");
 
 export const siteConfig = {
   ...COMPANY,

@@ -3,7 +3,7 @@ import { PublicHeader } from "@/components/layout/public-header";
 import { PublicSectionPage } from "@/features/public/public-section-page";
 import { createMetadata } from "@/lib/seo";
 
-export const metadata = createMetadata("Case Studies");
+export const metadata = createMetadata("Case Studies", undefined, "/case-studies");
 
 export default function CaseStudiesPage() {
   return (

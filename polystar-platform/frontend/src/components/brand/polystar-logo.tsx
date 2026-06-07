@@ -31,7 +31,8 @@ export function PolystarLogo({
         width={officialLogoDimensions.width}
         height={officialLogoDimensions.height}
         priority={priority}
-        className={cn(isMark ? "h-10 w-auto" : "h-10 w-auto sm:h-12")}
+        sizes={isMark ? "96px" : "(min-width: 640px) 288px, 220px"}
+        className={cn(isMark ? "h-10 w-auto object-contain" : "h-10 w-auto object-contain sm:h-12")}
       />
     </span>
   );

@@ -14,6 +14,16 @@ services:
         value: production
       - key: NODE_VERSION
         value: 22.x
+      - key: APP_NAME
+        value: POLYSTAR Platform
+      - key: APP_URL
+        value: https://www.polystar.rw
+      - key: FRONTEND_URL
+        value: https://www.polystar.rw
+      - key: CLIENT_URL
+        value: https://www.polystar.rw
+      - key: CORS_ORIGIN
+        value: https://www.polystar.rw
       - key: MONGODB_URI
         sync: false
       - key: MONGODB_DNS_SERVERS
@@ -26,24 +36,20 @@ services:
         sync: false
       - key: JWT_REFRESH_EXPIRES_IN
         value: 30d
-      - key: CLIENT_URL
-        sync: false
-      - key: CORS_ORIGIN
-        sync: false
-      - key: APP_URL
-        sync: false
-      - key: API_URL
-        sync: false
       - key: MAIL_FROM
-        sync: false
+        value: info@polystar.rw
+      - key: ADMIN_NOTIFICATION_EMAIL
+        value: amanipolystar@gmail.com
+      - key: CAREERS_EMAIL
+        value: careers@polystar.rw
       - key: SMTP_HOST
-        sync: false
+        value: mail.polystar.rw
       - key: SMTP_PORT
-        sync: false
+        value: 465
       - key: SMTP_SECURE
-        sync: false
+        value: true
       - key: SMTP_USER
-        sync: false
+        value: info@polystar.rw
       - key: SMTP_PASS
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
@@ -52,5 +58,5 @@ services:
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
-      - key: GOOGLE_RECAPTCHA_SECRET_KEY
-        sync: false
+      - key: LOG_LEVEL
+        value: info

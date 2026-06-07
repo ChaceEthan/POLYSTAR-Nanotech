@@ -43,17 +43,28 @@ Required variables:
 - `MONGODB_URI`
 - `JWT_ACCESS_SECRET`
 - `JWT_REFRESH_SECRET`
+- `APP_URL`
+- `FRONTEND_URL`
 - `CLIENT_URL`
 - `CORS_ORIGIN`
-- `APP_URL`
-- `API_URL`
-- `FRONTEND_URL`
+- `MAIL_FROM`
+- `ADMIN_NOTIFICATION_EMAIL`
 - `SMTP_HOST`
 - `SMTP_PORT`
 - `SMTP_SECURE`
 - `SMTP_USER`
 - `SMTP_PASS`
+
+Recommended variables:
+
+- `MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1`
+- `JWT_ACCESS_EXPIRES_IN=7d`
+- `JWT_REFRESH_EXPIRES_IN=30d`
+- `CAREERS_EMAIL`
+- `LOG_LEVEL=info`
 - Cloudinary variables when uploads are enabled.
+
+`API_URL` is optional for the backend. `NEXT_PUBLIC_API_URL` on the frontend must include `/api/v1`.
 
 ## Cloud Integrations
 

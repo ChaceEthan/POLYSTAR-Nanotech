@@ -18,6 +18,12 @@ const schema = z.object({
   phone: z.string().optional(),
   company: z.string().optional(),
   subject: z.string().min(2),
+  service: z.string().optional(),
+  projectScope: z.string().optional(),
+  preferredDate: z.string().optional(),
+  location: z.string().optional(),
+  budget: z.string().optional(),
+  companyWebsite: z.string().max(0).optional(),
   message: z.string().min(10)
 });
 
@@ -52,6 +58,9 @@ export function RequestForm({ type }: { type: RequestFormType }) {
   const requests = usePublicRequests();
   const mutation = requests[type];
   const copy = formCopy[type];
+  const showServiceDetails = type !== "contact";
+  const showBudget = type === "quotation";
+  const showSiteVisitDetails = type === "siteVisit";
   const [successMessage, setSuccessMessage] = useState<string | undefined>();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const form = useForm<z.infer<typeof schema>>({
@@ -62,6 +71,12 @@ export function RequestForm({ type }: { type: RequestFormType }) {
       phone: "",
       company: "",
       subject: "",
+      service: "",
+      projectScope: "",
+      preferredDate: "",
+      location: "",
+      budget: "",
+      companyWebsite: "",
       message: ""
     }
   });
@@ -71,13 +86,18 @@ export function RequestForm({ type }: { type: RequestFormType }) {
     setErrorMessage(undefined);
 
     try {
-      await mutation.mutateAsync(values);
+      const response = await mutation.mutateAsync(values);
       form.reset();
-      setSuccessMessage(copy.success);
+      setSuccessMessage(response.message ?? copy.success);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Unable to submit this request. Please try again.");
     }
   }
+
+  const fieldError = (field: keyof z.infer<typeof schema>) => {
+    const error = form.formState.errors[field];
+    return error?.message ? <p className="text-xs font-medium text-destructive">{error.message}</p> : null;
+  };
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
@@ -88,11 +108,13 @@ export function RequestForm({ type }: { type: RequestFormType }) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" {...form.register("name")} />
+          <Input id="name" aria-invalid={Boolean(form.formState.errors.name)} {...form.register("name")} />
+          {fieldError("name")}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" {...form.register("email")} />
+          <Input id="email" type="email" aria-invalid={Boolean(form.formState.errors.email)} {...form.register("email")} />
+          {fieldError("email")}
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -107,11 +129,49 @@ export function RequestForm({ type }: { type: RequestFormType }) {
       </div>
       <div className="grid gap-2">
         <Label htmlFor="subject">Subject</Label>
-        <Input id="subject" {...form.register("subject")} />
+        <Input id="subject" aria-invalid={Boolean(form.formState.errors.subject)} {...form.register("subject")} />
+        {fieldError("subject")}
       </div>
+      {showServiceDetails && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-2">
+            <Label htmlFor="service">Service</Label>
+            <Input id="service" {...form.register("service")} />
+          </div>
+          {showBudget && (
+            <div className="grid gap-2">
+              <Label htmlFor="budget">Budget range</Label>
+              <Input id="budget" {...form.register("budget")} />
+            </div>
+          )}
+          {showSiteVisitDetails && (
+            <>
+              <div className="grid gap-2">
+                <Label htmlFor="preferredDate">Preferred date</Label>
+                <Input id="preferredDate" type="date" {...form.register("preferredDate")} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="location">Site location</Label>
+                <Input id="location" {...form.register("location")} />
+              </div>
+            </>
+          )}
+        </div>
+      )}
+      {showServiceDetails && (
+        <div className="grid gap-2">
+          <Label htmlFor="projectScope">Project scope</Label>
+          <Textarea id="projectScope" {...form.register("projectScope")} />
+        </div>
+      )}
       <div className="grid gap-2">
         <Label htmlFor="message">Message</Label>
-        <Textarea id="message" {...form.register("message")} />
+        <Textarea id="message" aria-invalid={Boolean(form.formState.errors.message)} {...form.register("message")} />
+        {fieldError("message")}
+      </div>
+      <div className="hidden" aria-hidden="true">
+        <Label htmlFor="companyWebsite">Company website</Label>
+        <Input id="companyWebsite" tabIndex={-1} autoComplete="off" {...form.register("companyWebsite")} />
       </div>
       {successMessage && (
         <div role="status" className="flex items-start gap-2 rounded-md border border-accent/30 bg-accent/10 p-3 text-sm font-medium text-accent">

@@ -153,9 +153,9 @@ export function HomePage() {
       <section className="section-y bg-muted/40">
         <div className="container">
           <SectionHeading
-            eyebrow="Industry Images"
-            title="Visual coverage across engineering, industrial systems, software, data, cloud, and delivery teams."
-            description="Professional imagery is used across the platform with responsive sizing, descriptive alt text, and lazy loading through Next.js image optimization."
+            eyebrow="Operational Domains"
+            title="Engineering coverage across research, manufacturing, software, analytics, cloud, and consulting."
+            description="POLYSTAR works across connected technical environments where field systems, data platforms, and people need to operate as one dependable system."
           />
           <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {industryImages.map((item) => (
@@ -283,7 +283,7 @@ export function HomePage() {
           <SectionHeading
             eyebrow="Team"
             title="A professional delivery structure for leadership, engineering, operations, and consulting."
-            description="CMS records can replace these placeholders as team profiles are published."
+            description="A focused delivery model keeps technical accountability clear from planning through commissioning and support."
           />
           <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {teamMembers.map((member) => (

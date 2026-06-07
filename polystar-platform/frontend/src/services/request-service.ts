@@ -11,6 +11,7 @@ export type PublicRequestPayload = {
   preferredDate?: string;
   location?: string;
   budget?: string;
+  companyWebsite?: string;
   message: string;
 };
 

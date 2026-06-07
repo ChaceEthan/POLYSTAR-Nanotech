@@ -28,15 +28,21 @@ export function createMetadata(title?: string, description = siteConfig.descript
     category: "Engineering Technology",
     alternates: {
       canonical,
-      languages: Object.fromEntries(siteConfig.languages.map((language) => [language.locale, `/${language.code}`]))
+      languages: {
+        "en-US": canonical
+      }
     },
     icons: {
       icon: [
-        { url: brandAssets.favicon, type: "image/png" },
-        { url: brandAssets.appIcon, type: "image/png" }
+        { url: "/favicon.ico", sizes: "any" },
+        { url: brandAssets.favicon16, sizes: "16x16", type: "image/png" },
+        { url: brandAssets.favicon, sizes: "32x32", type: "image/png" },
+        { url: brandAssets.favicon48, sizes: "48x48", type: "image/png" },
+        { url: brandAssets.appIcon, sizes: "192x192", type: "image/png" },
+        { url: brandAssets.appIconLarge, sizes: "512x512", type: "image/png" }
       ],
-      shortcut: [{ url: brandAssets.favicon, type: "image/png" }],
-      apple: [{ url: brandAssets.appleIcon, type: "image/png" }]
+      shortcut: [{ url: "/favicon.ico", sizes: "any" }],
+      apple: [{ url: brandAssets.appleIcon, sizes: "180x180", type: "image/png" }]
     },
     manifest: "/manifest.webmanifest",
     openGraph: {

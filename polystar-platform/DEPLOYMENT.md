@@ -26,9 +26,8 @@ Required Vercel environment variables:
 
 - `NEXT_PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_API_URL`
-- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
 - `GOOGLE_SEARCH_CONSOLE_VERIFICATION` when Google verification is ready
-- Optional analytics/maps/recaptcha variables when those integrations are enabled
+- Optional analytics/maps variables when those integrations are enabled
 
 Post-deploy checks:
 
@@ -68,22 +67,29 @@ Required Render environment variables:
 - `CLIENT_URL`
 - `CORS_ORIGIN`
 - `APP_URL`
-- `API_URL`
+- `FRONTEND_URL`
 - `MAIL_FROM`
+- `ADMIN_NOTIFICATION_EMAIL`
+- `CAREERS_EMAIL`
 - `SMTP_HOST`
 - `SMTP_PORT`
 - `SMTP_SECURE`
 - `SMTP_USER`
 - `SMTP_PASS`
+
+Optional Render environment variables:
+
 - `CLOUDINARY_CLOUD_NAME`
 - `CLOUDINARY_API_KEY`
 - `CLOUDINARY_API_SECRET`
-- `GOOGLE_RECAPTCHA_SECRET_KEY` when recaptcha enforcement is enabled
+- `LOG_LEVEL`
+
+`API_URL` is optional on the backend. The frontend variable `NEXT_PUBLIC_API_URL` must include `/api/v1`, for example `https://polystar-nanotech.onrender.com/api/v1`.
 
 Post-deploy checks:
 
 - `GET /api/v1/health/live` returns service liveness for Render health checks
-- `GET /api/v1/health` returns `{"status":"ok","database":"connected"}` after MongoDB connects
+- `GET /api/v1/health` returns `{"status":"ok","database":"connected"}` after MongoDB connects, or degraded diagnostics if MongoDB is unavailable
 - `GET /api/v1/dashboard/summary` returns counts for an admin token
 - `POST /api/v1/upload` returns a Cloudinary secure URL for an authenticated upload
 - Client portal endpoints return real API-backed lists or empty states

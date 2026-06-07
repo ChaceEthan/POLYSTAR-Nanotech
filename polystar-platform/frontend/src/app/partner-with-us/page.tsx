@@ -3,7 +3,7 @@ import { PublicHeader } from "@/components/layout/public-header";
 import { PublicSectionPage } from "@/features/public/public-section-page";
 import { createMetadata } from "@/lib/seo";
 
-export const metadata = createMetadata("Partner With Us");
+export const metadata = createMetadata("Partner With Us", undefined, "/partner-with-us");
 
 export default function PartnerWithUsPage() {
   return (

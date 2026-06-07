@@ -2,42 +2,70 @@ import { logger } from "../utils/logger.js";
 
 type ValidationGroup = {
   name: string;
-  required?: boolean;
   keys: string[];
+  mode?: "any" | "all";
+  requiredForProduction?: boolean;
+  minimumLength?: number;
 };
 
 const groups: ValidationGroup[] = [
-  { name: "MongoDB Atlas", required: true, keys: ["MONGODB_URI"] },
-  { name: "JWT access secret", required: true, keys: ["JWT_SECRET", "JWT_ACCESS_SECRET"] },
-  { name: "JWT refresh secret", required: true, keys: ["JWT_REFRESH_SECRET"] },
-  { name: "Cloudinary", keys: ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"] },
-  { name: "Google Maps", keys: ["GOOGLE_MAPS_API_KEY", "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY"] },
-  { name: "Google Analytics", keys: ["GOOGLE_ANALYTICS_ID", "NEXT_PUBLIC_GA_MEASUREMENT_ID"] },
-  { name: "Google reCAPTCHA", keys: ["GOOGLE_RECAPTCHA_SITE_KEY", "GOOGLE_RECAPTCHA_SECRET_KEY"] },
-  { name: "Google Search Console", keys: ["GOOGLE_SEARCH_CONSOLE_VERIFICATION"] }
+  { name: "MongoDB Atlas", keys: ["MONGODB_URI"], requiredForProduction: true },
+  { name: "JWT access secret", keys: ["JWT_SECRET", "JWT_ACCESS_SECRET"], mode: "any", requiredForProduction: true, minimumLength: 24 },
+  { name: "JWT refresh secret", keys: ["JWT_REFRESH_SECRET"], requiredForProduction: true, minimumLength: 24 },
+  { name: "SMTP", keys: ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"], mode: "all" },
+  { name: "Cloudinary", keys: ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"], mode: "all" }
 ];
 
 function hasAnyKey(keys: string[]) {
   return keys.some((key) => Boolean(process.env[key]));
 }
 
+function hasAllKeys(keys: string[]) {
+  return keys.every((key) => Boolean(process.env[key]));
+}
+
 function missingKeys(keys: string[]) {
   return keys.filter((key) => !process.env[key]);
 }
 
+function shortKeys(group: ValidationGroup) {
+  if (!group.minimumLength) return [];
+
+  return group.keys.filter((key) => {
+    const value = process.env[key];
+    return value ? value.length < group.minimumLength! : false;
+  });
+}
+
 export function validateStartupEnvironment() {
-  const missingRequired = groups.filter((group) => group.required && !hasAnyKey(group.keys));
-  if (missingRequired.length > 0) {
-    throw new Error(`Missing required environment groups: ${missingRequired.map((group) => group.name).join(", ")}`);
-  }
+  const isProduction = process.env.NODE_ENV === "production";
+  const configured = (group: ValidationGroup) => (group.mode === "all" ? hasAllKeys(group.keys) : hasAnyKey(group.keys));
+
+  const missingProduction = groups
+    .filter((group) => isProduction && group.requiredForProduction && !configured(group))
+    .map((group) => ({ integration: group.name, acceptedKeys: group.keys }));
 
   const optionalMissing = groups
-    .filter((group) => !group.required && !hasAnyKey(group.keys))
+    .filter((group) => !group.requiredForProduction && !configured(group))
     .map((group) => ({ integration: group.name, acceptedKeys: group.keys }));
 
   const partial = groups
-    .filter((group) => hasAnyKey(group.keys) && missingKeys(group.keys).length > 0 && group.keys.length > 1)
+    .filter((group) => hasAnyKey(group.keys) && missingKeys(group.keys).length > 0 && group.keys.length > 1 && group.mode === "all")
     .map((group) => ({ integration: group.name, missingKeys: missingKeys(group.keys) }));
+
+  const weakSecrets = groups
+    .map((group) => ({ integration: group.name, shortKeys: shortKeys(group), minimumLength: group.minimumLength }))
+    .filter((group) => group.shortKeys.length > 0);
+
+  if (missingProduction.length > 0) {
+    logger.error("Production environment is missing required configuration; affected features will be degraded", {
+      missingProduction
+    });
+  }
+
+  if (weakSecrets.length > 0) {
+    logger.error("Secrets are shorter than the required minimum length", { weakSecrets });
+  }
 
   if (optionalMissing.length > 0) {
     logger.warn("Optional integration environment keys are missing", { optionalMissing });
@@ -48,6 +76,7 @@ export function validateStartupEnvironment() {
   }
 
   logger.info("Startup environment validation completed", {
-    requiredGroups: groups.filter((group) => group.required).map((group) => group.name)
+    requiredForProduction: groups.filter((group) => group.requiredForProduction).map((group) => group.name),
+    missingProductionCount: missingProduction.length
   });
 }

@@ -1,3 +1,4 @@
+import nodemailer, { type Transporter } from "nodemailer";
 import { mailConfig } from "../config/mail.js";
 import { logger } from "../utils/logger.js";
 
@@ -9,6 +10,27 @@ type EmailMessage = {
 };
 
 export class EmailService {
+  private transporter?: Transporter;
+
+  private getTransporter() {
+    if (this.transporter) return this.transporter;
+
+    this.transporter = nodemailer.createTransport({
+      host: mailConfig.smtp.host,
+      port: mailConfig.smtp.port,
+      secure: mailConfig.smtp.secure,
+      auth: {
+        user: mailConfig.smtp.user,
+        pass: mailConfig.smtp.pass
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000
+    });
+
+    return this.transporter;
+  }
+
   async send(message: EmailMessage) {
     if (!mailConfig.smtp.pass) {
       logger.warn("SMTP password is not configured. Email queued for provider integration.", {
@@ -19,15 +41,24 @@ export class EmailService {
       return { queued: true, provider: "smtp", configured: false };
     }
 
-    logger.info("Email provider ready", {
+    const response = await this.getTransporter().sendMail({
+      from: mailConfig.from,
+      to: message.to,
+      subject: message.subject,
+      text: message.text,
+      html: message.html
+    });
+
+    logger.info("Email sent", {
       host: mailConfig.smtp.host,
       port: mailConfig.smtp.port,
       secure: mailConfig.smtp.secure,
       to: message.to,
-      subject: message.subject
+      subject: message.subject,
+      messageId: response.messageId
     });
 
-    return { queued: true, provider: "smtp", configured: true };
+    return { queued: false, provider: "smtp", configured: true, messageId: response.messageId };
   }
 }
 

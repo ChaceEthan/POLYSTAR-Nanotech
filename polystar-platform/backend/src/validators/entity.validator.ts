@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const emptyToUndefined = (value: unknown) => (value === "" ? undefined : value);
+const requiredText = (min = 2, max = 240) => z.string().trim().min(min).max(max);
+const optionalText = (max = 240) => z.preprocess(emptyToUndefined, z.string().trim().max(max).optional());
+const optionalDate = z.preprocess(emptyToUndefined, z.coerce.date().optional());
+
 export const objectIdSchema = z.object({
   id: z.string().regex(/^[a-f\d]{24}$/i, "Invalid MongoDB object id")
 });
@@ -31,27 +36,30 @@ export const entityBodySchema = z.object({
 }).passthrough();
 
 export const requestBodySchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().optional(),
-  company: z.string().optional(),
-  service: z.string().optional(),
-  projectScope: z.string().optional(),
-  preferredDate: z.coerce.date().optional(),
-  location: z.string().optional(),
-  budget: z.string().optional(),
-  message: z.string().min(5),
+  name: requiredText(2, 120),
+  email: z.string().trim().email().max(180),
+  phone: optionalText(60),
+  company: optionalText(160),
+  subject: optionalText(180),
+  service: optionalText(160),
+  projectScope: optionalText(1500),
+  preferredDate: optionalDate,
+  location: optionalText(240),
+  budget: optionalText(120),
+  message: requiredText(10, 4000),
+  companyWebsite: z.string().trim().max(0, "Spam check failed").optional(),
   metadata: z.record(z.string(), z.unknown()).optional()
 }).passthrough();
 
 export const contactSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().optional(),
-  company: z.string().optional(),
-  subject: z.string().min(2),
-  message: z.string().min(10),
-  preferredLanguage: z.string().optional()
+  name: requiredText(2, 120),
+  email: z.string().trim().email().max(180),
+  phone: optionalText(60),
+  company: optionalText(160),
+  subject: requiredText(2, 180),
+  message: requiredText(10, 4000),
+  preferredLanguage: optionalText(24),
+  companyWebsite: z.string().trim().max(0, "Spam check failed").optional()
 });
 
 export const ticketReplySchema = z.object({

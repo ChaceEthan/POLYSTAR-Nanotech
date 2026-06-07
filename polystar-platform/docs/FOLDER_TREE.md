@@ -115,10 +115,15 @@ polystar-platform/
 │   ├── package.json
 │   ├── postcss.config.mjs
 │   ├── public/
-│   │   └── images/
-│   │       ├── hero-industrial.svg
-│   │       ├── og-polystar.svg
-│   │       └── technology-showcase.svg
+│   │   ├── brand/
+│   │   │   ├── apple-touch-icon.png
+│   │   │   ├── favicon-16x16.png
+│   │   │   ├── favicon-32x32.png
+│   │   │   ├── favicon-48x48.png
+│   │   │   ├── icon-192x192.png
+│   │   │   ├── icon-512x512.png
+│   │   │   └── orginal logo11.png
+│   │   └── favicon.ico
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
 │   └── src/
@@ -223,6 +228,7 @@ polystar-platform/
 ├── package.json
 ├── scripts/
 │   ├── clean.mjs
+│   ├── generate-brand-icons.mjs
 │   └── print-tree.mjs
 └── shared/
     ├── package.json

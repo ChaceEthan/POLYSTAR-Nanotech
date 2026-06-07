@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { portfolioItems } from "@/lib/public-content";
+import { portfolioItems, professionalImages } from "@/lib/public-content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,7 +54,7 @@ export function PortfolioBrowser() {
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {filteredItems.map((item) => (
               <Card key={item.slug} className="overflow-hidden">
-                <Image src={item.gallery[0]?.image ?? "/images/technology-showcase.svg"} alt={item.title} width={760} height={420} className="h-44 w-full object-cover" />
+                <Image src={item.gallery[0]?.image ?? professionalImages.embeddedTechnology} alt={item.title} width={760} height={420} className="h-44 w-full object-cover" />
                 <CardHeader>
                   <Badge variant="outline">{item.category}</Badge>
                   <CardTitle>{item.title}</CardTitle>

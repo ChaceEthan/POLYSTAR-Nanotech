@@ -65,6 +65,7 @@ async function initializeIndexes() {
 }
 
 function getMongoSrvRecordName() {
+  if (!env.MONGODB_URI) return undefined;
   const match = env.MONGODB_URI.match(/^mongodb\+srv:\/\/(?:[^@]+@)?([^/?]+)/);
   return match ? `_mongodb._tcp.${match[1]}` : undefined;
 }
@@ -154,6 +155,17 @@ export async function connectDatabase({ retries = 3, retryDelayMs = 2000, failOn
   mongoose.set("strictQuery", true);
   mongoose.set("bufferCommands", false);
   mongoose.set("bufferTimeoutMS", 0);
+
+  if (!env.MONGODB_URI) {
+    lastError = {
+      name: "MongoConfigurationError",
+      message: "MONGODB_URI is not configured.",
+      timestamp: new Date().toISOString()
+    };
+    logger.error("MongoDB connection skipped because MONGODB_URI is not configured", { error: lastError });
+    return getDatabaseHealth();
+  }
+
   await prepareMongoSrvResolver();
 
   if (mongoose.connection.readyState === 1) {

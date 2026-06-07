@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clientSections } from "@/lib/navigation";
-import { PolystarLogo } from "@/components/brand/polystar-logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 export function ClientShell({ children }: { children: React.ReactNode }) {
@@ -14,8 +13,8 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
     <main className="min-h-screen bg-background">
       <div className="grid min-h-screen lg:grid-cols-[240px_1fr]">
         <aside className="border-r bg-card p-4">
-          <Link href="/client" className="flex items-center" aria-label="POLYSTAR client portal">
-            <PolystarLogo className="max-w-[210px]" priority />
+          <Link href="/client" className="flex items-center text-sm font-semibold uppercase text-foreground" aria-label="POLYSTAR client portal">
+            POLYSTAR Client
           </Link>
           <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Client Portal</p>
           <nav className="mt-6 grid gap-1 text-sm">

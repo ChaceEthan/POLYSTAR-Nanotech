@@ -59,16 +59,22 @@ export type BlogArticle = {
   sections: Array<{ heading: string; body: string }>;
 };
 
-const imageParams = "?auto=format&fit=crop&w=1200&q=82";
+const imageParams = "?auto=format&fit=crop&w=1400&q=84";
 
 export const professionalImages = {
   engineering: `https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122${imageParams}`,
   nanotechnology: `https://images.unsplash.com/photo-1532187863486-abf9dbad1b69${imageParams}`,
   embeddedTechnology: `https://images.unsplash.com/photo-1518770660439-4636190af475${imageParams}`,
   manufacturing: `https://images.unsplash.com/photo-1581092160562-40aa08e78837${imageParams}`,
+  smartFactory: `https://images.unsplash.com/photo-1581091226825-a6a2a5aee158${imageParams}`,
+  robotics: `https://images.unsplash.com/photo-1485827404703-89b55fcc595e${imageParams}`,
+  pcbDesign: `https://images.unsplash.com/photo-1518770660439-4636190af475${imageParams}`,
+  electricalInstallation: `https://images.unsplash.com/photo-1621905252507-b35492cc74b4${imageParams}`,
   smartInfrastructure: `https://images.unsplash.com/photo-1494526585095-c41746248156${imageParams}`,
   softwareDevelopment: `https://images.unsplash.com/photo-1519389950473-47ba0277781c${imageParams}`,
   aiSolutions: `https://images.unsplash.com/photo-1551288049-bebda4e38f71${imageParams}`,
+  iotMonitoring: `https://images.unsplash.com/photo-1558494949-ef010cbdcc31${imageParams}`,
+  dataSystems: `https://images.unsplash.com/photo-1551288049-bebda4e38f71${imageParams}`,
   cloudSystems: `https://images.unsplash.com/photo-1558494949-ef010cbdcc31${imageParams}`,
   consulting: `https://images.unsplash.com/photo-1521737604893-d14cc237f11d${imageParams}`,
   research: `https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b${imageParams}`
@@ -93,7 +99,7 @@ export const industryImages = [
   {
     title: "Industrial Systems",
     category: "Industrial systems",
-    image: professionalImages.manufacturing,
+    image: professionalImages.smartFactory,
     alt: "Industrial engineer inspecting automated production equipment"
   },
   {
@@ -111,7 +117,7 @@ export const industryImages = [
   {
     title: "AI Solutions",
     category: "AI and analytics",
-    image: professionalImages.aiSolutions,
+    image: professionalImages.dataSystems,
     alt: "Analytics dashboard used for AI-assisted industrial decision support"
   },
   {

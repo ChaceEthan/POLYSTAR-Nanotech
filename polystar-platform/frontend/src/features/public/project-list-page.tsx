@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { projects } from "@/lib/public-content";
+import { projects, type ProjectDetail } from "@/lib/public-content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function ProjectListPage() {
+export function ProjectListPage({ items = projects }: { items?: ProjectDetail[] }) {
   return (
     <main>
       <section className="border-b bg-muted/40 py-16">
@@ -19,7 +19,7 @@ export function ProjectListPage() {
       </section>
       <section className="py-14">
         <div className="container grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project) => (
+          {items.map((project) => (
             <Card key={project.slug} className="flex flex-col">
               <CardHeader>
                 <Badge variant="outline">{project.sector}</Badge>

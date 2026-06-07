@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { PortfolioDetailPage } from "@/features/public/portfolio-detail-page";
-import { getPortfolioItem, portfolioItems } from "@/lib/public-content";
+import { getCmsPortfolioItem } from "@/lib/cms-content";
+import { portfolioItems } from "@/lib/public-content";
 import { breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/constants";
 
@@ -17,14 +18,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const item = getPortfolioItem(slug);
+  const item = await getCmsPortfolioItem(slug);
 
   return item ? createMetadata(item.title, item.summary, `/portfolio/${item.slug}`) : createMetadata("Portfolio Item", undefined, "/portfolio");
 }
 
 export default async function PortfolioItemPage({ params }: PageProps) {
   const { slug } = await params;
-  const item = getPortfolioItem(slug);
+  const item = await getCmsPortfolioItem(slug);
 
   if (!item) notFound();
 

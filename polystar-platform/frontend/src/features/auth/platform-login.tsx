@@ -3,7 +3,6 @@
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LogIn } from "lucide-react";
-import { PolystarLogo } from "@/components/brand/polystar-logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -45,7 +44,7 @@ export function PlatformLogin() {
     <main className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="gap-4">
-          <PolystarLogo priority className="max-w-[240px]" />
+          <p className="text-sm font-semibold uppercase text-secondary">POLYSTAR Platform</p>
           <CardTitle>Platform Login</CardTitle>
         </CardHeader>
         <CardContent>

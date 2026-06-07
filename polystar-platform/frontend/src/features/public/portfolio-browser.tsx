@@ -4,26 +4,25 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { portfolioItems, professionalImages } from "@/lib/public-content";
+import { portfolioItems, professionalImages, type PortfolioItem } from "@/lib/public-content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-const categories = ["All", ...Array.from(new Set(portfolioItems.map((item) => item.category)))];
-
-export function PortfolioBrowser() {
+export function PortfolioBrowser({ items = portfolioItems }: { items?: PortfolioItem[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const normalizedQuery = query.trim().toLowerCase();
+  const categories = useMemo(() => ["All", ...Array.from(new Set(items.map((item) => item.category)))], [items]);
 
   const filteredItems = useMemo(() => {
-    return portfolioItems.filter((item) => {
+    return items.filter((item) => {
       const categoryMatch = category === "All" || item.category === category;
       const searchable = [item.title, item.summary, item.category, item.sector, ...item.tags, ...item.services, ...item.technologies].join(" ").toLowerCase();
       return categoryMatch && (!normalizedQuery || searchable.includes(normalizedQuery));
     });
-  }, [category, normalizedQuery]);
+  }, [category, items, normalizedQuery]);
 
   return (
     <main>

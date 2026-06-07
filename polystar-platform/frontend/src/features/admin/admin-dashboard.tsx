@@ -1,7 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, BookOpenText, BriefcaseBusiness, Contact, FileQuestion, FolderKanban, HelpCircle, Layers3, Megaphone, Newspaper, Users } from "lucide-react";
+import {
+  Activity,
+  BookOpenText,
+  BriefcaseBusiness,
+  Contact,
+  FileQuestion,
+  FileText,
+  FolderKanban,
+  HelpCircle,
+  ImageIcon,
+  Layers3,
+  Megaphone,
+  MessageSquare,
+  Newspaper,
+  ServerCog,
+  Users
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { adminMenuItems } from "@/lib/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +28,24 @@ import { StatCard } from "@/components/dashboard/stat-card";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { getDashboardSummary } from "@/services/dashboard-service";
 
-const icons = [Users, FolderKanban, FileQuestion, Activity, Contact, HelpCircle, BookOpenText, Newspaper, Megaphone, Layers3, BriefcaseBusiness];
+const icons = [
+  Users,
+  FolderKanban,
+  FileQuestion,
+  Activity,
+  Contact,
+  HelpCircle,
+  BookOpenText,
+  Newspaper,
+  Megaphone,
+  Layers3,
+  BriefcaseBusiness,
+  ServerCog,
+  MessageSquare,
+  ImageIcon,
+  FileText,
+  Contact
+];
 
 function metricChange(isLoading: boolean, error: unknown, fallback: string) {
   if (isLoading) return "Loading summary";
@@ -45,7 +78,12 @@ export function AdminDashboard() {
     { label: "News", value: String(counts?.news ?? 0), change: change("Mongo news count") },
     { label: "Company Updates", value: String(counts?.companyUpdates ?? 0), change: change("Mongo updates count") },
     { label: "Portfolio Items", value: String(counts?.portfolioItems ?? 0), change: change("Mongo portfolio count") },
-    { label: "Case Studies", value: String(counts?.caseStudies ?? 0), change: change("Mongo case study count") }
+    { label: "Case Studies", value: String(counts?.caseStudies ?? 0), change: change("Mongo case study count") },
+    { label: "Services", value: String(counts?.services ?? 0), change: change("Mongo services count") },
+    { label: "Testimonials", value: String(counts?.testimonials ?? 0), change: change("Mongo testimonials count") },
+    { label: "Media Library", value: String(counts?.media ?? 0), change: change("Mongo gallery count") },
+    { label: "Documents", value: String(counts?.documents ?? 0), change: change("Mongo documents count") },
+    { label: "Messages", value: String(counts?.messages ?? 0), change: change("Mongo message count") }
   ];
 
   return (
@@ -54,9 +92,12 @@ export function AdminDashboard() {
         <div>
           <Badge variant="secondary">Admin Dashboard</Badge>
           <h1 className="mt-2 text-3xl font-semibold">Operational command center</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+            Analytics, quotation requests, messages, posts, projects, portfolio, media, users, and service content in one workspace.
+          </p>
         </div>
         <Button asChild>
-          <Link href="/admin/projects">Manage Projects</Link>
+          <Link href="/admin/quotations">Review Quotations</Link>
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminMenuItems } from "@/lib/navigation";
-import { PolystarLogo } from "@/components/brand/polystar-logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useAuthApi } from "@/hooks/use-auth-api";
 
@@ -43,8 +42,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <main className="min-h-screen bg-background">
       <div className="grid min-h-screen lg:grid-cols-[260px_1fr]">
         <aside className="border-r bg-polystar-dark p-4 text-white">
-          <Link href="/admin" className="flex items-center" aria-label="POLYSTAR Admin dashboard">
-            <PolystarLogo tone="light" className="max-w-[210px]" priority />
+          <Link href="/admin" className="flex items-center text-sm font-semibold uppercase text-white" aria-label="POLYSTAR Admin dashboard">
+            POLYSTAR Admin
           </Link>
           <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Admin Dashboard</p>
           <nav className="mt-6 grid gap-1 text-sm">

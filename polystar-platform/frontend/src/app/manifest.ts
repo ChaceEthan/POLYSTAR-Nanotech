@@ -22,6 +22,12 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "any"
       },
       {
+        src: brandAssets.appIcon,
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable"
+      },
+      {
         src: brandAssets.appIconLarge,
         sizes: "512x512",
         type: "image/png",

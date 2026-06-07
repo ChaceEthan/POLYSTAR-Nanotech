@@ -13,6 +13,11 @@ export type DashboardSummary = {
   companyUpdates: number;
   portfolioItems: number;
   caseStudies: number;
+  services: number;
+  testimonials: number;
+  media: number;
+  documents: number;
+  messages: number;
 };
 
 const summaryCollections = [
@@ -26,7 +31,12 @@ const summaryCollections = [
   { key: "news", collection: "news" },
   { key: "companyUpdates", collection: "company_updates" },
   { key: "portfolioItems", collection: "portfolio" },
-  { key: "caseStudies", collection: "case_studies" }
+  { key: "caseStudies", collection: "case_studies" },
+  { key: "services", collection: "services" },
+  { key: "testimonials", collection: "testimonials" },
+  { key: "media", collection: "gallery" },
+  { key: "documents", collection: "documents" },
+  { key: "messages", collection: "contacts" }
 ] as const;
 
 const emptySummary: DashboardSummary = {
@@ -40,7 +50,12 @@ const emptySummary: DashboardSummary = {
   news: 0,
   companyUpdates: 0,
   portfolioItems: 0,
-  caseStudies: 0
+  caseStudies: 0,
+  services: 0,
+  testimonials: 0,
+  media: 0,
+  documents: 0,
+  messages: 0
 };
 
 const cacheTtlMs = 30_000;

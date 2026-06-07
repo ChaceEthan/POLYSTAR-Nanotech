@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
@@ -21,24 +21,79 @@ import {
   Wrench
 } from "lucide-react";
 import { COMPANY } from "@polystar/shared";
-import { PolystarLogo } from "@/components/brand/polystar-logo";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAnalytics } from "@/hooks/use-platform-api";
 import { trackEvent } from "@/lib/analytics";
-import { industryImages, teamMembers } from "@/lib/public-content";
+import { industryImages, professionalImages, teamMembers } from "@/lib/public-content";
 
 const services = [
-  { icon: Factory, title: "Industrial Automation", text: "PLC, SCADA, instrumentation, process control, commissioning, and plant optimization.", tags: ["PLC", "SCADA", "Controls"] },
-  { icon: Cpu, title: "Embedded Systems", text: "Firmware, electronics, edge controllers, sensors, prototypes, and product engineering.", tags: ["Firmware", "PCB", "Edge"] },
-  { icon: RadioTower, title: "Industrial IoT", text: "Connected telemetry, gateways, dashboards, alerts, and predictive maintenance foundations.", tags: ["IIoT", "Telemetry", "Dashboards"] },
-  { icon: PlugZap, title: "Electrical Engineering", text: "Power systems, panels, wiring, protection, diagnostics, and compliant field delivery.", tags: ["Power", "Panels", "Safety"] },
-  { icon: Building2, title: "Smart Infrastructure", text: "Monitoring and control systems for water, energy, buildings, transport, and public assets.", tags: ["Smart Cities", "Water", "Energy"] },
-  { icon: Bot, title: "Software Development", text: "Enterprise web platforms, client portals, APIs, analytics systems, and IoT software.", tags: ["Platforms", "APIs", "Portals"] },
-  { icon: Wrench, title: "Consultancy", text: "Technical audits, feasibility studies, architecture, procurement support, and delivery advisory.", tags: ["Audits", "Architecture", "Advisory"] },
-  { icon: GraduationCap, title: "Training", text: "Hands-on training for automation, embedded systems, software, electrical, and IoT teams.", tags: ["Workshops", "Labs", "Upskilling"] }
+  {
+    icon: Factory,
+    title: "Industrial Automation",
+    text: "PLC, SCADA, instrumentation, process control, commissioning, and plant optimization.",
+    tags: ["PLC", "SCADA", "Controls"],
+    image: professionalImages.smartFactory,
+    signal: "Closed-loop control"
+  },
+  {
+    icon: Cpu,
+    title: "Embedded Systems",
+    text: "Firmware, electronics, edge controllers, sensors, prototypes, and product engineering.",
+    tags: ["Firmware", "PCB", "Edge"],
+    image: professionalImages.pcbDesign,
+    signal: "Device-to-cloud ready"
+  },
+  {
+    icon: RadioTower,
+    title: "Industrial IoT",
+    text: "Connected telemetry, gateways, dashboards, alerts, and predictive maintenance foundations.",
+    tags: ["IIoT", "Telemetry", "Dashboards"],
+    image: professionalImages.iotMonitoring,
+    signal: "Live asset visibility"
+  },
+  {
+    icon: PlugZap,
+    title: "Electrical Engineering",
+    text: "Power systems, panels, wiring, protection, diagnostics, and compliant field delivery.",
+    tags: ["Power", "Panels", "Safety"],
+    image: professionalImages.electricalInstallation,
+    signal: "Safe field execution"
+  },
+  {
+    icon: Building2,
+    title: "Smart Infrastructure",
+    text: "Monitoring and control systems for water, energy, buildings, transport, and public assets.",
+    tags: ["Smart Cities", "Water", "Energy"],
+    image: professionalImages.smartInfrastructure,
+    signal: "Infrastructure intelligence"
+  },
+  {
+    icon: Bot,
+    title: "AI & Software",
+    text: "Enterprise platforms, AI-assisted analytics, client portals, APIs, and IoT software.",
+    tags: ["AI", "APIs", "Portals"],
+    image: professionalImages.aiSolutions,
+    signal: "Decision systems"
+  },
+  {
+    icon: Lightbulb,
+    title: "Research",
+    text: "Nanotechnology, applied R&D, prototypes, laboratory validation, and pilot programs.",
+    tags: ["R&D", "Labs", "Pilots"],
+    image: professionalImages.nanotechnology,
+    signal: "Prototype to pilot"
+  },
+  {
+    icon: GraduationCap,
+    title: "Training & Advisory",
+    text: "Hands-on training, technical audits, feasibility studies, architecture, and delivery advisory.",
+    tags: ["Workshops", "Audits", "Upskilling"],
+    image: professionalImages.consulting,
+    signal: "Capability transfer"
+  }
 ];
 
 const industries = ["Manufacturing", "Water Utilities", "Energy", "Agriculture", "Smart Buildings", "Transport", "Education", "Public Infrastructure"];
@@ -49,6 +104,12 @@ const projects = [
   { name: "RFID Attendance", area: "Identity systems", text: "RFID-based attendance automation for schools, organizations, and controlled facilities." },
   { name: "Visitor Management", area: "Enterprise software", text: "Secure visitor registration, approval, reporting, and audit-ready front-desk workflows." },
   { name: "Fish Feed Drying Machine", area: "Industrial equipment", text: "Applied mechanical, electrical, and control engineering for aquaculture production support." }
+];
+
+const heroCounters = [
+  { value: 42, suffix: "+", label: "Projects completed" },
+  { value: 18, suffix: "+", label: "Clients served" },
+  { value: 35, suffix: "+", label: "Technologies delivered" }
 ];
 
 const stats = [
@@ -65,8 +126,57 @@ const testimonials = [
 
 const partners = ["Utilities", "Manufacturers", "Universities", "Government Programs", "Technology Vendors"];
 
+const heroVisuals = [
+  { image: professionalImages.robotics, title: "Robotics", icon: Bot },
+  { image: professionalImages.pcbDesign, title: "PCB + embedded", icon: Cpu },
+  { image: professionalImages.nanotechnology, title: "Nanotech lab", icon: Lightbulb }
+];
+
+const heroParticles = Array.from({ length: 26 }, (_, index) => ({
+  left: `${(index * 37) % 100}%`,
+  top: `${(index * 19) % 100}%`,
+  delay: `${(index % 7) * 0.45}s`,
+  duration: `${6 + (index % 5)}s`
+}));
+
+function AnimatedCounter({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) {
+  const prefersReducedMotion = useReducedMotion();
+  const [count, setCount] = useState(prefersReducedMotion ? value : 0);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setCount(value);
+      return;
+    }
+
+    let frame = 0;
+    const totalFrames = 56;
+    const animation = window.setInterval(() => {
+      frame += 1;
+      const progress = 1 - Math.pow(1 - frame / totalFrames, 3);
+      setCount(Math.round(value * Math.min(progress, 1)));
+      if (frame >= totalFrames) window.clearInterval(animation);
+    }, 22);
+
+    return () => window.clearInterval(animation);
+  }, [prefersReducedMotion, value]);
+
+  return (
+    <div className="hero-counter-tile">
+      <div className="font-mono text-3xl font-semibold text-secondary sm:text-4xl">
+        {count}
+        {suffix}
+      </div>
+      <p className="mt-1 text-xs font-semibold uppercase text-slate-200">{label}</p>
+    </div>
+  );
+}
+
 export function HomePage() {
   const analytics = useAnalytics();
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 700], [0, 90]);
+  const visualY = useTransform(scrollY, [0, 700], [0, -58]);
 
   useEffect(() => {
     analytics.track.mutate({
@@ -78,36 +188,47 @@ export function HomePage() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-polystar-dark text-white">
-        <Image
-          src={industryImages[0].image}
-          alt={industryImages[0].alt}
-          fill
-          priority
-          sizes="100vw"
-          className="-z-20 object-cover"
-        />
-        <div className="absolute inset-0 -z-10 bg-polystar-dark/78" />
-        <div className="absolute inset-0 -z-10 industrial-grid opacity-35" />
-        <div className="container flex min-h-[82vh] items-end py-16">
-          <motion.div className="max-w-5xl pb-4" initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <PolystarLogo priority tone="light" className="mb-8 max-w-[300px] sm:max-w-[460px]" />
+      <section className="enterprise-hero relative isolate min-h-[calc(100svh-4rem)] overflow-hidden bg-polystar-dark text-white">
+        <motion.div className="absolute inset-0 -z-30" style={{ y: backgroundY }} aria-hidden="true">
+          <Image
+            src={professionalImages.smartFactory}
+            alt="Engineers working around automated industrial technology"
+            fill
+            priority
+            sizes="100vw"
+            className="scale-110 object-cover"
+          />
+        </motion.div>
+        <div className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(11,15,25,0.94),rgba(10,46,93,0.75)_48%,rgba(11,15,25,0.9))]" />
+        <div className="absolute inset-0 -z-10 industrial-grid opacity-35" aria-hidden="true" />
+        <div className="hero-scanline absolute inset-0 -z-10" aria-hidden="true" />
+        <div className="absolute inset-0 -z-10" aria-hidden="true">
+          {heroParticles.map((particle, index) => (
+            <span
+              key={index}
+              className="hero-particle"
+              style={{ left: particle.left, top: particle.top, animationDelay: particle.delay, animationDuration: particle.duration }}
+            />
+          ))}
+        </div>
+        <div className="container grid min-h-[calc(100svh-4rem)] items-center gap-10 py-14 lg:grid-cols-[1.05fr_0.95fr]">
+          <motion.div className="max-w-5xl" initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <Badge variant="secondary">POLYSTAR NANOTECH LTD · Kigali, Rwanda</Badge>
             <h1 className="mt-5 max-w-5xl text-[length:var(--font-size-display)] font-semibold leading-none">
               Engineering Smart Solutions for Industry, Infrastructure & Innovation
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
-              Multidisciplinary engineering for automation, embedded systems, IIoT, electrical systems, smart infrastructure, software, consultancy, and training.
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-200">
+              Advanced automation, embedded systems, AI, IoT, electrical engineering, nanotechnology research and industrial consulting.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button
                 asChild
                 size="lg"
                 variant="secondary"
-                onClick={() => trackEvent("request_consultation_click", { category: "cta", label: "hero" })}
+                onClick={() => trackEvent("request_quotation_click", { category: "cta", label: "hero" })}
               >
-                <Link href="/request-consultation">
-                  Request Consultation <ArrowRight className="h-4 w-4" />
+                <Link href="/get-quotation">
+                  Request Quotation <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
               <Button
@@ -115,19 +236,42 @@ export function HomePage() {
                 size="lg"
                 variant="outline"
                 className="border-white/40 bg-white/5 text-white hover:bg-white/15"
-                onClick={() => trackEvent("view_projects_click", { category: "cta", label: "hero" })}
+                onClick={() => trackEvent("explore_services_click", { category: "cta", label: "hero" })}
               >
-                <Link href="/projects">Explore Projects</Link>
+                <Link href="/services">Explore Services</Link>
               </Button>
             </div>
-            <div className="mt-10 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map(([value, label]) => (
-                <div key={label} className="border-l border-white/30 bg-white/10 px-4 py-3">
-                  <div className="font-mono text-2xl font-semibold text-secondary">{value}</div>
-                  <p className="mt-1 text-xs font-medium uppercase text-slate-200">{label}</p>
-                </div>
+            <div className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
+              {heroCounters.map((counter) => (
+                <AnimatedCounter key={counter.label} {...counter} />
               ))}
             </div>
+          </motion.div>
+          <motion.div className="relative hidden min-h-[560px] lg:block" style={{ y: visualY }} aria-hidden="true">
+            <div className="absolute left-8 top-4 h-72 w-72 border border-secondary/30 bg-white/5 backdrop-blur-sm" />
+            <div className="absolute bottom-12 right-4 h-80 w-80 border border-accent/25 bg-polystar-dark/35 backdrop-blur-sm" />
+            {heroVisuals.map((visual, index) => {
+              const Icon = visual.icon;
+              return (
+                <motion.div
+                  key={visual.title}
+                  className="hero-visual-card"
+                  initial={{ opacity: 0, y: 28 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.12 * index }}
+                  style={{ top: `${index * 28 + 3}%`, left: `${index % 2 === 0 ? 6 : 34}%` }}
+                >
+                  <Image src={visual.image} alt="" fill sizes="320px" className="object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-polystar-dark/90 via-polystar-dark/25 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                    <span className="text-sm font-semibold">{visual.title}</span>
+                    <span className="grid h-10 w-10 place-items-center border border-white/25 bg-white/15 backdrop-blur">
+                      <Icon className="h-5 w-5 text-secondary" />
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </section>
@@ -188,16 +332,31 @@ export function HomePage() {
           />
           <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {services.map((service) => (
-              <Card key={service.title} className="group overflow-hidden transition-transform hover:-translate-y-1">
+              <Card key={service.title} className="feature-card group overflow-hidden transition-transform hover:-translate-y-1">
+                <div className="relative h-36 overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={`${service.title} visual`}
+                    fill
+                    sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-polystar-dark/85 via-polystar-dark/20 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                    <Badge variant="secondary">{service.signal}</Badge>
+                    <span className="grid h-10 w-10 place-items-center border border-white/25 bg-white/15 text-white backdrop-blur">
+                      <service.icon className="h-5 w-5" />
+                    </span>
+                  </div>
+                </div>
                 <CardHeader>
-                  <service.icon className="h-7 w-7 text-secondary" />
                   <CardTitle>{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm leading-6 text-muted-foreground">{service.text}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="mt-5 grid grid-cols-3 gap-2">
                     {service.tags.map((tag) => (
-                      <span key={tag} className="rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+                      <span key={tag} className="rounded-md border bg-muted px-2 py-2 text-center text-xs font-semibold text-muted-foreground">
                         {tag}
                       </span>
                     ))}

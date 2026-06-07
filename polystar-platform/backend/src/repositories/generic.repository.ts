@@ -21,6 +21,7 @@ const allowedSortFields = new Set(["createdAt", "updatedAt", "title", "name", "s
 const searchableFields = [
   "title",
   "name",
+  "slug",
   "summary",
   "description",
   "subject",

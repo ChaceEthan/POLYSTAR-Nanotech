@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { env } from "../config/env.js";
 import { emailService } from "../services/email.service.js";
 import { services } from "../services/index.js";
-import { created } from "../utils/http.js";
+import { ok } from "../utils/http.js";
 import { logAuditEvent } from "../utils/audit.js";
 import { logger } from "../utils/logger.js";
 
@@ -67,46 +67,96 @@ function requestEmailBody(type: PublicRequestType, payload: Record<string, any>)
 async function notifyPublicRequest(type: PublicRequestType, payload: Record<string, any>) {
   try {
     const body = requestEmailBody(type, payload);
-    await emailService.send({
+    const result = await emailService.send({
       to: env.ADMIN_NOTIFICATION_EMAIL,
       subject: `[POLYSTAR] New ${requestLabels[type]} from ${payload.name}`,
       ...body
     });
+
+    return {
+      status: result.configured ? "sent" : "queued",
+      configured: result.configured,
+      to: env.ADMIN_NOTIFICATION_EMAIL,
+      provider: result.provider,
+      messageId: result.messageId
+    };
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
     logger.error("Public request notification email failed", {
       type,
-      error: error instanceof Error ? error.message : String(error)
+      error: message
     });
+
+    return {
+      status: "failed",
+      configured: true,
+      to: env.ADMIN_NOTIFICATION_EMAIL,
+      provider: "smtp",
+      error: message
+    };
   }
 }
 
-export const requestController = {
-  contact: async (req: Request, res: Response) => {
-    const payload = sanitizePublicRequest(req.body, "contact");
-    const contact = await services.contacts.create(payload);
-    await notifyPublicRequest("contact", payload);
-    logAuditEvent(req, "create", "contacts", String((contact as any)._id ?? (contact as any).id));
-    return created(res, contact, "Request submitted successfully.");
-  },
-  quotation: async (req: Request, res: Response) => {
-    const payload = sanitizePublicRequest(req.body, "quotation");
-    const quotation = await services.quotations.create(payload);
-    await notifyPublicRequest("quotation", payload);
-    logAuditEvent(req, "create", "quotations", String((quotation as any)._id ?? (quotation as any).id));
-    return created(res, quotation, "Quotation submitted successfully.");
-  },
-  consultation: async (req: Request, res: Response) => {
-    const payload = sanitizePublicRequest(req.body, "consultation");
-    const consultation = await services.consultations.create(payload);
-    await notifyPublicRequest("consultation", payload);
-    logAuditEvent(req, "create", "consultations", String((consultation as any)._id ?? (consultation as any).id));
-    return created(res, consultation, "Consultation submitted successfully.");
-  },
-  siteVisit: async (req: Request, res: Response) => {
-    const payload = sanitizePublicRequest(req.body, "siteVisit");
-    const siteVisit = await services.site_visits.create(payload);
-    await notifyPublicRequest("siteVisit", payload);
-    logAuditEvent(req, "create", "site_visits", String((siteVisit as any)._id ?? (siteVisit as any).id));
-    return created(res, siteVisit, "Site visit submitted successfully.");
+async function createPublicRequest(
+  req: Request,
+  res: Response,
+  type: PublicRequestType,
+  service: typeof services.contacts,
+  resourceName: string,
+  successMessage: string
+) {
+  const payload = sanitizePublicRequest(req.body, type);
+  const createdRecord = await service.create({
+    ...payload,
+    metadata: {
+      ...payload.metadata,
+      notification: {
+        email: {
+          status: "pending",
+          to: env.ADMIN_NOTIFICATION_EMAIL,
+          provider: "smtp"
+        }
+      }
+    }
+  });
+  const id = String((createdRecord as any)._id ?? (createdRecord as any).id);
+  const notification = await notifyPublicRequest(type, payload);
+  let responseRecord = createdRecord;
+
+  try {
+    responseRecord = await service.update(id, {
+      metadata: {
+        ...((createdRecord as any).metadata ?? {}),
+        notification: {
+          email: notification
+        }
+      }
+    });
+  } catch (error) {
+    logger.error("Unable to persist public request notification status", {
+      type,
+      resourceName,
+      id,
+      error: error instanceof Error ? error.message : String(error)
+    });
   }
+
+  logAuditEvent(req, "create", resourceName, id);
+
+  const message =
+    notification.status === "failed"
+      ? `${successMessage} The request was saved, but the admin email notification failed and has been logged.`
+      : successMessage;
+
+  return ok(res, responseRecord, message, 201, { notification });
+}
+
+export const requestController = {
+  contact: (req: Request, res: Response) => createPublicRequest(req, res, "contact", services.contacts, "contacts", "Request submitted successfully."),
+  quotation: (req: Request, res: Response) =>
+    createPublicRequest(req, res, "quotation", services.quotations, "quotations", "Quotation submitted successfully."),
+  consultation: (req: Request, res: Response) =>
+    createPublicRequest(req, res, "consultation", services.consultations, "consultations", "Consultation submitted successfully."),
+  siteVisit: (req: Request, res: Response) =>
+    createPublicRequest(req, res, "siteVisit", services.site_visits, "site_visits", "Site visit submitted successfully.")
 };

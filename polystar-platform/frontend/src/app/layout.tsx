@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Providers } from "./providers";
 import { GoogleAnalytics } from "@/components/integrations/google-analytics";
-import { createMetadata, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
+import { createMetadata, organizationJsonLd, serviceCatalogJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata();
 
@@ -19,6 +19,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           type="application/ld+json"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceCatalogJsonLd()) }}
         />
         <GoogleAnalytics />
         <Providers>{children}</Providers>

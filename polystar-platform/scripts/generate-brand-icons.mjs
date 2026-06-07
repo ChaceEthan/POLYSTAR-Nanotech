@@ -13,6 +13,8 @@ const pngIcons = [
   ["favicon-48x48.png", 48],
   ["icon-192x192.png", 192],
   ["icon-512x512.png", 512],
+  ["android-chrome-192x192.png", 192],
+  ["android-chrome-512x512.png", 512],
   ["apple-touch-icon.png", 180]
 ];
 
@@ -55,7 +57,11 @@ function createIco(images) {
 await mkdir(brandDir, { recursive: true });
 
 for (const [filename, size] of pngIcons) {
-  await writeFile(join(brandDir, filename), await renderPng(size));
+  const rendered = await renderPng(size);
+  await writeFile(join(brandDir, filename), rendered);
+  if (["favicon-16x16.png", "favicon-32x32.png", "apple-touch-icon.png", "android-chrome-192x192.png", "android-chrome-512x512.png"].includes(filename)) {
+    await writeFile(join(publicDir, filename), rendered);
+  }
 }
 
 const icoImages = await Promise.all(

@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { blogArticles } from "@/lib/public-content";
+import type { BlogArticle } from "@/lib/public-content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function BlogListPage() {
+export function BlogListPage({ articles = blogArticles }: { articles?: BlogArticle[] }) {
   return (
     <main>
       <section className="border-b bg-muted/40 py-16">
@@ -19,7 +20,7 @@ export function BlogListPage() {
       </section>
       <section className="py-14">
         <div className="container grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {blogArticles.map((article) => (
+          {articles.map((article) => (
             <Card key={article.slug} className="overflow-hidden">
               <Image src={article.heroImage} alt={article.title} width={760} height={420} className="h-44 w-full object-cover" />
               <CardHeader>

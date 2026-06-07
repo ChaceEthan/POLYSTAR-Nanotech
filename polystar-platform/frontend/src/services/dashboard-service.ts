@@ -12,6 +12,11 @@ export type DashboardSummary = {
   companyUpdates: number;
   portfolioItems: number;
   caseStudies: number;
+  services: number;
+  testimonials: number;
+  media: number;
+  documents: number;
+  messages: number;
 };
 
 export async function getDashboardSummary() {

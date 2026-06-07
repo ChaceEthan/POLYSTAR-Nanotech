@@ -3,6 +3,11 @@ import { brandAssets } from "./brand";
 import { siteConfig } from "./constants";
 import type { BlogArticle } from "./public-content";
 
+function absoluteUrl(pathOrUrl: string) {
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  return `${siteConfig.website}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
+}
+
 export function createMetadata(title?: string, description = siteConfig.description, path = "/"): Metadata {
   const pageTitle = title ? `${title} | ${siteConfig.platformName}` : `${siteConfig.platformName} | ${siteConfig.tagline}`;
   const url = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.polystar.rw";
@@ -14,8 +19,21 @@ export function createMetadata(title?: string, description = siteConfig.descript
     title: pageTitle,
     description,
     keywords: [
+      "Polystar Nanotech Rwanda",
+      "Engineering Company Rwanda",
+      "Industrial Automation Rwanda",
+      "IoT Rwanda",
+      "AI Solutions Rwanda",
+      "Electrical Engineering Rwanda",
+      "Embedded Systems Rwanda",
+      "Nanotechnology Rwanda",
       "POLYSTAR Nanotech Ltd",
       "industrial automation Rwanda",
+      "IoT engineering Rwanda",
+      "AI solutions Rwanda",
+      "electrical engineering Rwanda",
+      "embedded systems Rwanda",
+      "nanotechnology Rwanda",
       "embedded systems Kigali",
       "industrial IoT",
       "smart infrastructure",
@@ -94,13 +112,16 @@ export function websiteJsonLd() {
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
     name: siteConfig.name,
     url: siteConfig.website,
-    logo: `${siteConfig.website}${brandAssets.footerLogo}`,
+    logo: absoluteUrl(brandAssets.footerLogo),
+    image: absoluteUrl(brandAssets.openGraph),
     slogan: siteConfig.tagline,
+    description: siteConfig.description,
     email: siteConfig.email,
     telephone: siteConfig.phone,
+    priceRange: "$$",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Kigali",
@@ -116,7 +137,52 @@ export function organizationJsonLd() {
         availableLanguage: ["English", "Kinyarwanda", "French", "Swahili"]
       }
     ],
+    knowsAbout: [
+      "Industrial Automation Rwanda",
+      "IoT Rwanda",
+      "AI Solutions Rwanda",
+      "Electrical Engineering Rwanda",
+      "Embedded Systems Rwanda",
+      "Nanotechnology Rwanda",
+      "Smart Infrastructure"
+    ],
     sameAs: ["https://www.polystar.rw"]
+  };
+}
+
+export function serviceCatalogJsonLd() {
+  const services = [
+    "Industrial Automation Rwanda",
+    "IoT Rwanda",
+    "AI Solutions Rwanda",
+    "Electrical Engineering Rwanda",
+    "Embedded Systems Rwanda",
+    "Nanotechnology Rwanda",
+    "Software Development Rwanda",
+    "Industrial Consulting Rwanda"
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "POLYSTAR Nanotech engineering services",
+    itemListElement: services.map((name, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Service",
+        name,
+        provider: {
+          "@type": "Organization",
+          name: siteConfig.name,
+          url: siteConfig.website
+        },
+        areaServed: {
+          "@type": "Country",
+          name: "Rwanda"
+        }
+      }
+    }))
   };
 }
 
@@ -141,7 +207,7 @@ export function articleJsonLd(article: BlogArticle) {
     "@type": "Article",
     headline: article.title,
     description: article.excerpt,
-    image: `${siteConfig.website}${article.heroImage}`,
+    image: absoluteUrl(article.heroImage),
     datePublished: article.publishedAt,
     dateModified: article.publishedAt,
     author: {
@@ -153,7 +219,7 @@ export function articleJsonLd(article: BlogArticle) {
       name: siteConfig.name,
       logo: {
         "@type": "ImageObject",
-        url: `${siteConfig.website}${brandAssets.footerLogo}`
+        url: absoluteUrl(brandAssets.footerLogo)
       }
     },
     mainEntityOfPage: {

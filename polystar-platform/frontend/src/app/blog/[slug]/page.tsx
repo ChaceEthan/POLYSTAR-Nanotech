@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { BlogArticlePage } from "@/features/public/blog-article-page";
-import { blogArticles, getBlogArticle } from "@/lib/public-content";
+import { getCmsBlogArticle } from "@/lib/cms-content";
+import { blogArticles } from "@/lib/public-content";
 import { articleJsonLd, breadcrumbJsonLd, createMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/constants";
 
@@ -17,14 +18,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = getBlogArticle(slug);
+  const article = await getCmsBlogArticle(slug);
 
   return article ? createMetadata(article.title, article.excerpt, `/blog/${article.slug}`) : createMetadata("Blog Article", undefined, "/blog");
 }
 
 export default async function BlogArticleRoute({ params }: PageProps) {
   const { slug } = await params;
-  const article = getBlogArticle(slug);
+  const article = await getCmsBlogArticle(slug);
 
   if (!article) notFound();
 
